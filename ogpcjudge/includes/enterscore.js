@@ -32,6 +32,9 @@ function loadAchList(achId){
 function buildDiv(achArray){
 	var resultRow = achArray.DATA;  
 	
+	// clear div:
+	$('#achList').html('');
+
 	// ID,CATEGORY_ID,CHALLENGE_FLAG,DESCR,DISPLAY_ORDER_NUM,POINT_VALUE
 	// rowdex is outside rows
 	for(rowdex=0;rowdex<resultRow.length;rowdex++){
@@ -45,8 +48,9 @@ function createAchCheckbox(rawData){
 	var achievementID = rawData[0];
 	var achievementValue = rawData[5];
 	var achievementDescr = rawData[3];
+	var theHtml = '';
 	
-	var theHtml ='<div class="checkbox scoring" id="';
+	theHtml ='<div class="checkbox scoring" id="';
 	theHtml += 'd' + achievementID + '">';
 	theHtml += '<label><input type="checkbox" id="c' + achievementID;
 	theHtml += '" onClick="highlight('+ achievementID + ')" name="score" value="';
