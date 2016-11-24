@@ -38,18 +38,6 @@
 
 	<div class="form-group achievements" id='achList'>
 	<!--- loaded via ajax --->
-	<!---
-	<cfloop query="rc.achprofessional">
-			<div class="checkbox scoring" id="d#rc.achprofessional.ID#">
-			<label>
-			&nbsp;
-			<input type="checkbox" id="pf#rc.achprofessional.ID#" onClick="highlight(this.id)"
-				name="score<!--- pf#rc.achprofessional.ID# --->" value="#rc.achprofessional.ID#">
-			#DESCR#
-			</label>
-			</div>
-		</cfloop>
-		 --->
 	</div>
 
 	<button type="submit" class="btn btn-default">Enter Score</button>
