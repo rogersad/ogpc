@@ -1,0 +1,63 @@
+/* override bootstrap stuff, local css colors, etc here.*/
+
+/* override railo debugging dumps: too small, cant read. */
+.-railo-dump.modern .table-dump {
+    font-size:1em;
+}
+.label {
+    font-size: 100%;
+    line-height:1.6em;
+}
+.-railo-dump.modern .bgl-query{
+    color:#363;
+}
+.-railo-dump.modern .bgl-simple{
+    color:#363;
+}
+/* end railo debugging stuff */
+
+/* override default bootstrap stuff */
+.container-fluid{
+    padding-left:16px;
+    padding-right:16px;
+}
+
+/* enterscore page */
+.locked {
+    background-color:#B92C28;
+    color:#DBDBDB;
+}
+.notlocked{
+    background-color:#C9E2B3;
+}
+
+/* achievements class is default hidden.   */
+div .achievements {
+    border-radius: 10px;
+    border:2px solid #843534;
+    padding:2px;
+    display:none;
+}
+/* scoring wraps each individual question */
+div .scoring {
+    font-size:1.1em;
+    margin-bottom:10px;
+    border-radius:6px;
+    border:1px solid gray;
+}
+
+/* pull the checkboxes off the border/edge of screen: */
+.checkbox input[type="checkbox"]{
+    margin-left:-16px;
+}
+
+div .checkSelected {
+    background-color:#D6E9C6;
+    border:4px solid #3C763D;
+}
+
+
+
+
+
+
