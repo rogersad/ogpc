@@ -7,6 +7,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 	<cfoutput>
     <title>#rc.pageTitle#</title> <!--- set in /views/pagename.cfm --->
 	</cfoutput>
@@ -56,6 +57,9 @@
     <script language="javascript" src="includes/dist/js/jquery-ui.min.js"></script>
 	<!--- any custom js for a page, full tag like above. set in /views/pagename.cfm --->
 	<cfoutput>#rc.jslist#</cfoutput>
+
+	<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+	<META HTTP-EQUIV="Expires" CONTENT="-1">
 </head>
 </html>
 
