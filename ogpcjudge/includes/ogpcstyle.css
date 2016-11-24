@@ -36,7 +36,7 @@ div .achievements {
     border-radius: 10px;
     border:2px solid #843534;
     padding:2px;
-    display:none;
+    /* display:none; */
 }
 /* scoring wraps each individual question */
 div .scoring {

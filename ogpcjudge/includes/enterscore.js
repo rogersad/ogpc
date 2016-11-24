@@ -1,3 +1,4 @@
+
 //locks team name selection:
 function lock(){
 	if ($('#locked').val() == 'true'){
@@ -35,25 +36,45 @@ function buildDiv(achArray){
 	var resultRow = achArray.DATA;  //item display is rows[index][currentColumn]
 	var valueCount = resultRow[0].length;
 	var rMessage = '';
-	alert(resultRow);
-	alert(resultRow.length);        //number of questions 
+	//alert(resultRow);				  // all rows
+	//alert(resultRow.length);        //number of questions 
 	
 	// ID,CATEGORY_ID,CHALLENGE_FLAG,DESCR,DISPLAY_ORDER_NUM,POINT_VALUE
 	// rowdex is outside rows
 	for(rowdex=0;rowdex<resultRow.length;rowdex++){
 		//actual values:
-		for(value=0;value<valueCount;value++){
+		//for(value=0;value<valueCount;value++){
 			//test script: row,col,value\n:
-			rMessage += rowdex + ',' + value + ',' + resultRow[rowdex][value] + '\n';
-		}
+			//rMessage += rowdex + ',' + value + ',' + resultRow[rowdex][value] + '\n';
+			//alert(resultRow[rowdex]);
+			createAchCheckbox(resultRow[rowdex]);
+		//}
 		
 	}
-	alert(rMessage);
+	//alert(rMessage);
 }
+
+function createAchCheckbox(rawData){
+	
+	var achievementID = rawData[0];
+	var achievementValue = rawData[5];
+	var achievementDescr = rawData[3];
+	
+	var theHtml ='<div class="checkbox scoring" id="';
+	theHtml += 'd' + achievementID + '">';
+	theHtml += '<label><input type="checkbox" id="c' + achievementID;
+	theHtml += '" onClick="highlight('+ achievementID + ')" name="score" value="';
+	theHtml += achievementValue + '">' + achievementDescr + '</label></div>';
+	
+	alert(theHtml);
+	
+	$('#achList').append(theHtml);
+}
+
 
 /*  CFLOOP VERSION:
  * 	<cfloop query="rc.achprofessional">
-			<div class="checkbox scoring" id="d#rc.achprofessional.ID#">
+			d#rc.achprofessional.ID#">
 			<label>
 			&nbsp;
 			<input type="checkbox" id="pf#rc.achprofessional.ID#" onClick="highlight(this.id)"
@@ -97,9 +118,10 @@ function showQ(){
 
 function highlight(checkId){
 	//checkboxes cant be styled. highlight the wrapper div:
-	var dNum = "d" + checkId.substring(2,checkId.length);
-
-	if($("#"+checkId).prop('checked')) {
+	var dNum = "d" + checkId; //changed to send id only, div id = d+ID
+	var checkboxId = "c" + checkId;
+	
+	if($("#"+checkboxId).prop('checked')) {
 		$("#"+dNum).addClass('checkSelected');
 	}
 	else{

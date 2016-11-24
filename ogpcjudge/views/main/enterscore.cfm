@@ -36,7 +36,7 @@
 	</label>
 	</div>
 
-	<div class="form-group achievements">
+	<div class="form-group achievements" id='achList'>
 	<!--- loaded via ajax --->
 	<!---
 	<cfloop query="rc.achprofessional">
