@@ -79,9 +79,14 @@ function highlight(checkId){
 
 
 function confirmscore(){
-	var theMessage = 'Do you confirm these achievements?';
+	var team = $('#teamID option:selected').val();
+	var theMessage = 'Confirm achievements for \n\n';
+	theMessage += $('#teamID option:selected').text();
 	
-	if(confirm(theMessage)){
+	if (team <= 0){
+		alert("Team must be selected.");
+	}
+	else if(confirm(theMessage)){
 		$('#frmAchievements').submit();
 	}
 		
