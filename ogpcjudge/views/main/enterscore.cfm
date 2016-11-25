@@ -4,7 +4,7 @@
 <cfoutput>
 	<h2>Score Achievements </h2>
 	<!---<cfdump var="#rc#"> --->
-<form action="#BuildURL('main.submitscore')#" method="post" autocomplete="off">
+<form id='frmAchievements' action="#BuildURL('main.submitscore')#" method="post" autocomplete="off">
   <div class="form-group">
 	<label>Team:
 	<select class="form-control" name="teamID" id="teamID">
@@ -14,11 +14,13 @@
 	</select>
 	</label>
 	&nbsp;
+	<!---
 	<label class="inline">
 		<input type="hidden" id="locked" value="false">
   		<!--- <input type="checkbox" id="lockTeam" value="lockTeam" onclick="lock();"> Lock --->
 		<input id="lockTeam" type="button" class="btn btn-default notlocked" onClick="lock();" value="Lock" />
 	</label>
+	 --->
 	</div>
 
 	<div class="form-group">
@@ -39,8 +41,8 @@
 	<div class="form-group achievements" id='achList'>
 	<!--- loaded via ajax --->
 	</div>
-
-	<button type="submit" class="btn btn-default">Enter Score</button>
+	<br /><br />
+	<button type="button" class="btn btn-default" id="btnSubmit">Submit Scores</button>
 	<br /><br />
 </form>
 
