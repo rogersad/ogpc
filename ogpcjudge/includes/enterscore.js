@@ -1,5 +1,6 @@
 
 //locks team name selection:
+/* no longer used
 function lock(){
 	if ($('#locked').val() == 'true'){
 		if (confirm('Unlock team list?')){
@@ -14,11 +15,16 @@ function lock(){
 		$('#teamID :not(:selected)').attr('disabled','disabled');
 	}
 }
-
+*/
 
 //click function for get achievements (getQ)
 $('#getQ').click(function(){
 	loadAchList($('#categoryID option:selected').val());
+});
+
+// clik function for submit
+$('#btnSubmit').click(function(){
+	confirmscore();
 });
 
 // AJAX load of achievemetns when getQ button is clicked.
@@ -52,7 +58,7 @@ function createAchCheckbox(rawData){
 	
 	theHtml ='<div class="checkbox scoring" id="';
 	theHtml += 'd' + achievementID + '">';
-	theHtml += '<label><input type="checkbox" id="c' + achievementID;
+	theHtml += '<label><input type="checkbox" class="cbox" id="c' + achievementID;
 	theHtml += '" onClick="highlight('+ achievementID + ')" name="score" value="';
 	theHtml += achievementValue + '">' + achievementDescr + '</label></div>';
 	
@@ -73,6 +79,14 @@ function highlight(checkId){
 }
 
 
+function confirmscore(){
+	var theMessage = 'Do you confirm these achievements?';
+	
+	if(confirm(theMessage)){
+		$('#frmAchievements').submit();
+	}
+		
+}
 
 
 
