@@ -52,7 +52,6 @@ function createAchCheckbox(rawData){
 	
 	// ***THESE MAY CHANGE...
 	var achievementID = rawData[0];
-	var achievementValue = rawData[5];
 	var achievementDescr = rawData[3];
 	var theHtml = '';
 	
@@ -60,7 +59,7 @@ function createAchCheckbox(rawData){
 	theHtml += 'd' + achievementID + '">';
 	theHtml += '<label><input type="checkbox" class="cbox" id="c' + achievementID;
 	theHtml += '" onClick="highlight('+ achievementID + ')" name="score" value="';
-	theHtml += achievementValue + '">' + achievementDescr + '</label></div>';
+	theHtml += achievementID + '">' + achievementDescr + '</label></div>';
 	
 	$('#achList').append(theHtml);
 }
