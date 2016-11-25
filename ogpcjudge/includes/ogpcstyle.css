@@ -1,4 +1,13 @@
 /* override bootstrap stuff, local css colors, etc here.*/
+/* these loaded from google font */
+@import url('https://fonts.googleapis.com/css?family=Nova+Mono|Source+Sans+Pro');
+h1, h2 {
+    font-family: 'Nova Mono', monospace;;
+    text-transform: uppercase;
+}
+body{
+   font-family: 'Source Sans Pro', sans-serif; 
+}
 
 /* override railo debugging dumps: too small, cant read. */
 .-railo-dump.modern .table-dump {
@@ -56,7 +65,14 @@ div .checkSelected {
     border:4px solid #3C763D;
 }
 
-
+.error{
+    font-size:1.2em;
+    font-weight:bold;
+    color:#B92C28;
+    border:1px solid #B92C28;
+    padding:40px;
+    
+}
 
 
 

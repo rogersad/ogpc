@@ -33,9 +33,44 @@
 	<cffunction name="submitscore" access="public">
 		<cfargument name="rc" required="true">
 
+		<cfset var result.returnCode = 0>
+
 		<!--- save team, achievement scores --->
+		<cfloop list="#rc.score#" index="listDex">
+			<cfset result = variables.ogpcService.saveScore(rc.teamID,listDex)>
+			<cfif result.returnCode>
+				<cfset rc.errorMessage = 'There was an error. Please re-enter the score.'>
+				<cfset rc.errorMessage &= '<br />DO NOT USE THE BACK BUTTON.<br /> Please use the link below.'>
+				 <cfset variables.fw.setview("main.error")>
+				 <cfbreak>
+			</cfif>
+		</cfloop>
+
+		<!--- saveComment(catID,teamID,text) --->
+		<cfif result.returnCode>
+			<!--- will get re-routed to error --->
+		<cfelse>
+			<cfset result = variables.ogpcService.saveComment(rc.teamID,rc.categoryID,rc.comments)>
+		</cfif>
+
+		<!--- get team name for nice output on confirmation page: --->
+		<cfset rc.team = variables.ogpcService.getTeams(rc.teamID)>
 
 	</cffunction>
 
 
 </cfcomponent>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
