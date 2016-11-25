@@ -8,6 +8,7 @@
   <div class="form-group">
 	<label>Team:
 	<select class="form-control" name="teamID" id="teamID">
+		<option value="">Select...</option>
 		<cfloop query="rc.teams">
 			<option value="#rc.teams.ID#">###rc.teams.ID#, #rc.teams.school_name# : #rc.teams.name#</option>
 		</cfloop>
@@ -49,6 +50,6 @@
 	<button type="button" class="btn btn-default" id="btnSubmit">Submit Scores</button>
 	<br /><br />
 </form>
-
+<!--- <input type='button' onclick="alert($('##teamID option:selected').text());">test</button> --->
 
 </cfoutput>
