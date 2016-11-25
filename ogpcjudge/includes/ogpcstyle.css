@@ -43,7 +43,7 @@ body{
 /* achievements class is default hidden.   */
 div .achievements {
     border-radius: 10px;
-    border:2px solid #843534;
+    border:2px solid #31BAFF;
     padding:2px;
     /* display:none; */
 }
