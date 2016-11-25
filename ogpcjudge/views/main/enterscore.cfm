@@ -41,7 +41,11 @@
 	<div class="form-group achievements" id='achList'>
 	<!--- loaded via ajax --->
 	</div>
-	<br /><br />
+
+	<div class="form-group" id='commentdiv'>
+	<textarea class="achievements" name="comments" id="comments" cols="60" rows="4" placeholder="comments"></textarea>
+	</div>
+	<br />
 	<button type="button" class="btn btn-default" id="btnSubmit">Submit Scores</button>
 	<br /><br />
 </form>

@@ -13,7 +13,7 @@
 	</cffunction>
 
 
-	<!--- *** getAchievements() ideally... turn this into ajax pull --->
+	<!--- *** getAchievements() ideally... turn this into ajax pull
 	<cffunction name="getAchievements">
 		<cfargument name="catID" default="0">
 		<cfargument name="eventYear" default="#application.eventYear#">
@@ -29,7 +29,7 @@
 
 		<cfreturn get_achievements>
 	</cffunction>
-
+ --->
 
 	<!--- *** getAchievementsJSON(categoryID) --->
 	<cffunction name="getAchievementsJSON" returntype="any" returnformat="json">
@@ -71,7 +71,20 @@
 		ORDER BY S.SCHOOL_NAME, T.NAME
 		</cfquery>
 
-		<cfreturn get_teams>	</cffunction>
+		<cfreturn get_teams>
+	</cffunction>
+
+
+	<cffunction name="saveScore">
+
+	</cffunction>
 
 </cfcomponent>
+
+
+
+
+
+
+
 
