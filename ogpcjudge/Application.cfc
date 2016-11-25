@@ -14,7 +14,7 @@
 
 <!--- framework settings --->
 <!--- *** CHANGE THESE TO 'FALSE' FOR PRODUCTION: *** --->
-<cfset framework.reloadApplicationOnEveryRequest = true>
+<cfset framework.reloadApplicationOnEveryRequest = false>
 <cfset framework.trace = false>
 <!--- *** *** *** *** *** *** *** *** --->
 
