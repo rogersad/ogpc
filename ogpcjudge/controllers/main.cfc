@@ -26,6 +26,13 @@
 		<cfset rc.judges = variables.ogpcService.getJudgeTeams()>
 		<cfset rc.teams = variables.ogpcService.getTeams()>
 
+		<cfif NOT structKeyExists(client,'categoryID')>
+			<cfset client.categoryID = 0>
+		<cfelse>
+			<!--- preload: --->
+			<cfset rc.achievements = variables.ogpcService.getAchievements(client.categoryID)>
+		</cfif>
+
 	</cffunction>
 
 
@@ -51,6 +58,11 @@
 			<!--- will get re-routed to error --->
 		<cfelse>
 			<cfset result = variables.ogpcService.saveComment(rc.teamID,rc.categoryID,rc.comments)>
+		</cfif>
+
+		<!--- judges don't change categories, so this will trigger preload of cat list --->
+		<cfif client.categoryID NEQ rc.categoryID>
+			<cfset client.categoryID = rc.categoryID> <!--- change catid --->
 		</cfif>
 
 		<!--- get team name for nice output on confirmation page: --->
