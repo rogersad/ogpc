@@ -13,9 +13,9 @@
 	</cffunction>
 
 
-	<!--- *** getAchievements() ideally... turn this into ajax pull
+	<!--- *** getAchievements() reinstated for preload if client.categoryID exists: --->
 	<cffunction name="getAchievements">
-		<cfargument name="catID" default="0">
+		<cfargument name="catID" required="true">
 		<cfargument name="eventYear" default="#application.eventYear#">
 
 		<cfquery name="get_achievements" datasource="#application.dsn#" cachedwithin="#CreateTimeSpan(0,1,0,0)#">
@@ -29,7 +29,7 @@
 
 		<cfreturn get_achievements>
 	</cffunction>
- --->
+
 
 	<!--- *** getAchievementsJSON(categoryID) --->
 	<cffunction name="getAchievementsJSON" returntype="any" returnformat="json">
