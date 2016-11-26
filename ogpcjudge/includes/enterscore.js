@@ -17,9 +17,9 @@ function lock(){
 }
 */
 
-//click function for get achievements (getQ)
-$('#getQ').click(function(){
-	loadAchList($('#categoryID option:selected').val());
+// moved ajax load to select.change
+$( "#categoryID" ).change(function() {
+  loadAchList($('#categoryID option:selected').val());
 });
 
 // clik function for submit
