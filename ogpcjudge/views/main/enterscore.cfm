@@ -48,7 +48,8 @@
 
 	<div class="form-group achievements" id='achList'>
 	<!--- loaded via ajax on select change, else... --->
-	<cfif structKeyExists(client, 'categoryID') AND (client.categoryID GT 0)>
+	<!--- <cfif structKeyExists(client, 'categoryID') AND (client.categoryID GT 0)> --->
+	<cfif structKeyExists(rc, 'achievements')>
 		<cfloop query="rc.achievements">
 			<div class="checkbox scoring" id="d#rc.achievements.ID#">
 				<label>
