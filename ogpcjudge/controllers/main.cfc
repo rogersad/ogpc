@@ -33,6 +33,7 @@
 			<cfset rc.achievements = variables.ogpcService.getAchievements(client.categoryID)>
 		</cfif>
 
+
 	</cffunction>
 
 
@@ -70,6 +71,16 @@
 
 	</cffunction>
 
+
+	<!--- updatescore(teamID,catID) reloads prior scores based on team, category --->
+	<cffunction name="updatescore">
+		<cfargument name="rc" required="true">
+
+		<cfset rc.categories = variables.ogpcService.getCategories(rc.catID)>
+		<cfset rc.teams = variables.ogpcService.getTeams(rc.teamID)>
+		<cfset rc.achievements = variables.ogpcService.getAchievements(rc.catID)>
+
+	</cffunction>
 
 </cfcomponent>
 
