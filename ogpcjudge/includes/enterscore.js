@@ -69,12 +69,17 @@ function highlight(checkId){
 	var dNum = "d" + checkId; //changed to send id only, div id = d+ID
 	var checkboxId = "c" + checkId;
 	
-	if($("#"+checkboxId).prop('checked')) {
+	//for reset
+	if(checkId == 0){ 
+		$('div').removeClass('checkSelected');
+	}
+	else if ($("#"+checkboxId).prop('checked')) {
 		$("#"+dNum).addClass('checkSelected');
 	}
 	else{
 		$("#"+dNum).removeClass('checkSelected');
 	}
+	
 }
 
 //created separate function. needed elsewhere also
