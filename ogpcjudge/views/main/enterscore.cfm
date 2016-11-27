@@ -4,7 +4,11 @@
 
 <cfoutput>
 	<h2>Score Achievements </h2>
-	<!---<cfdump var="#rc#"> --->
+<form id='frmUpdate' action="#BuildURL('main.updatescore')#" onSubmit='return teamNotZero();' method="post" autocomplete="off">
+	<input type="hidden" name="teamID" id="updateTeamID" value="">
+	<input type="hidden" name="catID" id="updateCatID" value="">
+</form>
+
 <form id='frmAchievements' action="#BuildURL('main.submitscore')#" method="post" autocomplete="off">
   <div class="form-group">
 	<label>Team:
@@ -16,13 +20,11 @@
 	</select>
 	</label>
 	&nbsp;
-	<!---
+	<!--- this is the submit button for update form ABOVE: --->
 	<label class="inline">
-		<input type="hidden" id="locked" value="false">
-  		<!--- <input type="checkbox" id="lockTeam" value="lockTeam" onclick="lock();"> Lock --->
-		<input id="lockTeam" type="button" class="btn btn-default notlocked" onClick="lock();" value="Lock" />
+		<input id="reloadPrior" type="button" class="btn btn-default" onClick="copyTC();submitUpdate();" value="Update Score" />
 	</label>
-	 --->
+
 	</div>
 
 	<div class="form-group">

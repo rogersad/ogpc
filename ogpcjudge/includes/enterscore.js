@@ -77,24 +77,38 @@ function highlight(checkId){
 	}
 }
 
-
-function confirmscore(){
+//created separate function. needed elsewhere also
+function teamNotZero(){
 	var team = $('#teamID option:selected').val();
+	if (team <= 0){
+		alert("Team must be selected.");
+		return false;
+	}
+	else return true;
+}
+
+// for main enter score page
+function confirmscore(){
 	var theMessage = 'Confirm achievements for \n\n';
 	theMessage += $('#teamID option:selected').text();
 	
-	if (team <= 0){
-		alert("Team must be selected.");
-	}
-	else if(confirm(theMessage)){
-		$('#frmAchievements').submit();
+	if (teamNotZero()){
+		if(confirm(theMessage)){
+			$('#frmAchievements').submit();
+		}
 	}
 		
 }
 
+// for update prior score (called from enterscore)
+function copyTC(){
+	$('#updateTeamID').val($('#teamID option:selected').val());
+	$('#updateCatID').val($('#categoryID option:selected').val());
+}
 
-
-
+function submitUpdate(){
+	$('#frmUpdate').submit();
+}
 
 
 
