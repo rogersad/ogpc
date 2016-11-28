@@ -29,23 +29,60 @@ $('#btnSubmit').click(function(){
 
 // AJAX load of achievemetns when getQ button is clicked.
 function loadAchList(achId){
+	alert(achId);
 	$.post("index.cfm?action=ajax.getAchievementsJSON",{id: achId}).done(function( retArray ) {
+		//alert(retArray);
 		buildDiv(retArray);
 	});	
 }
 
 // builds the page div with achievements
+/**/
 function buildDiv(achArray){
 	var resultRow = achArray.DATA;  
+	var radioActive = false;
 	
 	// clear div:
 	$('#achList').html('');
 
+
+}
+function zzz(){	
+	
+	
 	// ID,CATEGORY_ID,CHALLENGE_FLAG,DESCR,DISPLAY_ORDER_NUM,POINT_VALUE
 	// rowdex is outside rows
 	for(rowdex=0;rowdex<resultRow.length;rowdex++){
+		if(rawData[6] =='Y'){
+			//create radio set
+			radioActive = true;
+			startAchDiv(rawData);
+			createAchRadio(rawData);
+		}
+		else if (rawData[7] > 0){
+			createAchRadio(rawData);
+		}
+		else {
+			if(radioActive){
+				closeAchDiv();
+				radioActive = false;
+			}
 			createAchCheckbox(resultRow[rowdex]);
+		}
+			
 	}
+}
+
+function startAchDiv(rawData){
+	var achievementID = rawData[0];
+	
+	theHtml ='<div class="checkbox scoring" id="';
+	theHtml += 'd' + achievementID + '">';
+	$('#achList').append(theHtml);
+}
+
+function closeAchDiv(){
+	$('#achList').append('</div>');
 }
 
 function createAchCheckbox(rawData){
@@ -55,10 +92,28 @@ function createAchCheckbox(rawData){
 	var achievementDescr = rawData[3];
 	var theHtml = '';
 	
-	theHtml ='<div class="checkbox scoring" id="';
-	theHtml += 'd' + achievementID + '">';
+	startAchDiv(rawData);
+	
 	theHtml += '<label><input type="checkbox" class="cbox" id="c' + achievementID;
 	theHtml += '" onClick="highlight('+ achievementID + ')" name="score" value="';
+	theHtml += achievementID + '">' + achievementDescr + '</label></div>';
+	
+	$('#achList').append(theHtml);
+}
+
+function createAchRadio(rawData){
+	
+	// ***THESE MAY CHANGE...
+	var achievementID = rawData[0];
+	var achievementDescr = rawData[3];
+	var theHtml = '';
+	
+	startAchDiv(rawData);
+	
+	theHtml += '<label><input type="radio" class="cbox" id="c' + achievementID;
+	theHtml += '" onClick="highlight('+ achievementID + ')";
+	//radio differs here:
+	theHtml +=  'name="score' + achievementID +" value="';
 	theHtml += achievementID + '">' + achievementDescr + '</label></div>';
 	
 	$('#achList').append(theHtml);
