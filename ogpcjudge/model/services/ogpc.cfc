@@ -5,7 +5,7 @@
 		<cfargument name="catID" required="true">
 		<cfargument name="eventYear" default="#application.eventYear#">
 
-		<cfquery name="get_achievements" datasource="#application.dsn#"><!---  cachedwithin="#CreateTimeSpan(0,1,0,0)#" --->
+		<cfquery name="get_achievements" datasource="#application.dsn#" cachedwithin="#CreateTimeSpan(0,1,0,0)#"><!---  --->
 		SELECT ID,CATEGORY_ID,CHALLENGE_FLAG,DESCR
 			,DISPLAY_ORDER_NUM,POINT_VALUE,HAS_CHILD_FLAG,PARENT_ID
 		FROM OGPC_ACHIEVEMENTS
@@ -24,7 +24,7 @@
 		<cfargument name="catID" required="true">
 		<cfargument name="eventYear" default="#application.eventYear#">
 
-		<cfquery name="get_achievements" datasource="#application.dsn#"> <!---  cachedwithin="#CreateTimeSpan(0,1,0,0)#" --->
+		<cfquery name="get_achievements" datasource="#application.dsn#" cachedwithin="#CreateTimeSpan(0,1,0,0)#"> <!---  --->
 		SELECT ID,CATEGORY_ID,CHALLENGE_FLAG,DESCR
 			,DISPLAY_ORDER_NUM,POINT_VALUE,HAS_CHILD_FLAG,PARENT_ID
 		FROM OGPC_ACHIEVEMENTS
