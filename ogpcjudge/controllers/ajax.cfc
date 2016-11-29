@@ -30,6 +30,20 @@
 
 	</cffunction>
 
+
+	<!--- ***getScoresJSON(teamID,categoryID) used for alert if score already entered. --->
+	<cffunction name="getScoresJSON">
+	      <cfargument name="teamID" required="true">
+	      <cfargument name="catID" required="true">
+
+	      <!--- get existing score as json, renderData skips framework. --->
+	      <cfset rc.getAch = variables.ogpcService.getScoresJSON(rc.teamID,rc.categoryID)>
+	      <cfset result =  variables.fw.renderData('json', rc.getAch) >
+
+	</cffunction>
+
+
+
 </cfcomponent>
 
 
