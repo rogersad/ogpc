@@ -5,7 +5,6 @@
 <cfset currentParent = -1>
 <cfset achIndex = 0>  <!--- loop index for achievememts. starts at 0, incremented before 1st row --->
 
-
 <cfoutput>
 	<h2>Score Achievements </h2>
 <form id='frmUpdate' action="#BuildURL('main.updatescore')#" onSubmit='return teamNotZero();' method="post" autocomplete="off">
@@ -45,36 +44,11 @@
 	</select>
 	</label>
 	&nbsp;
-	<!---
-	<label class="inline">
-		<input id="getQ" type="button" class="btn btn-default" value="Load Achievement List" />
-	</label>
-	 --->
 	</div>
 
 	<div class="form-group achievements" id='achList'>
 	<!--- loaded via ajax on select change, else... --->
-	<!---
-	<label>
-	<input type="radio" class="cbox" id="c#rc.achievements.ID#"
-		onClick="highlight(#rc.achievements.ID#)" name="score#currentParent#" value="#rc.achievements.ID#">
-		#rc.achievements.DESCR#
-	</label>
-	 --->
-
 	<cfif structKeyExists(rc, 'achievements')>
-		<!--- old checkboxes only
-		<cfloop query="rc.achievements">
-			<div class="checkbox scoring" id="d#rc.achievements.ID#">
-			<label>
-			<input type="checkbox" class="cbox" id="c#rc.achievements.ID#"
-				onClick="highlight(#rc.achievements.ID#)" name="score" value="#rc.achievements.ID#">
-				#rc.achievements.DESCR#
-			</label>
-			</div>
-		</cfloop>
-		 --->
-
 		<!--- loop by number so outer loop can be reset in case of radios --->
 		<cfloop from="1" to="#rc.achievements.RECORDCOUNT#" index="queryRow">
 			<!--- must use achIndex and not achIndex. queryRow can't be updated --->
