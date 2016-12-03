@@ -77,7 +77,10 @@
 		</cfloop>
 
 		<!--- saveComment(catID,teamID,text) --->
-		<cfset result = variables.ogpcService.saveComment(rc.teamID,rc.categoryID,rc.comments)>
+		<cfif Len(Trim(rc.comments))>
+			<cfset rc.comments &= ' -#client.judgename#'>
+			<cfset result = variables.ogpcService.saveComment(rc.teamID,rc.categoryID,rc.comments)>
+		</cfif>
 
 		<!--- judges don't usually change categories, so this will trigger preload of cat list --->
 		<cfif NOT StructKeyExists(client,'categoryID')>
