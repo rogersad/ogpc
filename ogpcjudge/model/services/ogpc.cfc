@@ -67,6 +67,23 @@
 	</cffunction>
 
 
+	<!--- *** getAchievementsJSON(categoryID) --->
+	<cffunction name="getScoresJSON" returntype="any" returnformat="json">
+		<cfargument name="teamID" required="true">
+		<cfargument name="catID" required="true">
+
+		<cfquery name="get_score_count" datasource="#application.dsn#"> <!---  --->
+		SELECT count(T.ID) RECORDNUM
+		FROM OGPC_TEAM_ACHIEVEMENTS T, OGPC_ACHIEVEMENTS A
+		WHERE A.CATEGORY_ID = #arguments.catID#
+		  AND T.OGPC_TEAM_ID = #arguments.teamID#
+		  AND T.OGPC_ACHIEVEMENT_ID = A.ID
+		</cfquery>
+
+		<cfreturn get_score_count>
+	</cffunction>
+
+
 	<!--- *** getTeams([teamId][,eventYear]) no params: full list --->
 	<cffunction name="getTeams">
 		<cfargument name="teamId" default="0">
@@ -99,6 +116,17 @@
 			VALUES
 				(#arguments.teamID#,#arguments.catID#,'#arguments.commentText#')
 		</cfquery>
+
+	</cffunction>
+
+
+	<!--- ***loggit(text) --->
+	<cffunction name="loggit">
+		<cfargument name="logtext" required="true">
+
+		<cfset var filePath = GetDirectoryFromPath(GetCurrentTemplatePath())>
+		<cfset var textToLog = DateFormat(Now(),'yyyymmdd') & TimeFormat(Now(),':HH:mm:ss') & ' #arguments.logtext#'>
+		<cffile action="append" addnewline="true" file="#filePath#/scorelog.txt" output="#textToLog#">
 
 	</cffunction>
 
