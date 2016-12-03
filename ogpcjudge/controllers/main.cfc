@@ -42,9 +42,19 @@
 		<!--- Save judge name if exists to client var: --->
 		<cfif structKeyExists(rc,'lastnameFI')>
 			<cfset client.judgename = Replace(rc.lastnameFI,' ','','all')>
+			<cfset variables.fw.setview('main.default')>
 		</cfif>
 
-		<!--- <cfset fw.setview('main.default')> --->
+	</cffunction>
+
+	<!--- ***reset() - deletes judge name --->
+	<cffunction name="reset">
+		<cfargument name="rc" required="true">
+
+		<cfif structKeyExists(client,'judgename')>
+			<cfset DeleteClientVariable('judgename')>
+		</cfif>
+
 	</cffunction>
 
 
