@@ -6,7 +6,14 @@
 <cfset achIndex = 0>  <!--- loop index for achievememts. starts at 0, incremented before 1st row --->
 
 <cfoutput>
-	<h2>Score Achievements </h2>
+<h2>Score Achievements </h2>
+
+<cfif NOT structKeyExists(client,'judgename')>
+	<cflocation addtoken="false" url="#BuildURL('main.login')#">
+<cfelse>
+	<div>Current user: #client.judgename# <br /><br /></div>
+</cfif>
+
 <form id='frmUpdate' action="#BuildURL('main.updatescore')#" onSubmit='return teamNotZero();' method="post" autocomplete="off">
 	<input type="hidden" name="teamID" id="updateTeamID" value="">
 	<input type="hidden" name="catID" id="updateCatID" value="">

@@ -34,7 +34,7 @@
 			<ul class="nav navbar-nav">
 				<cfoutput>
 				<li><a href="#BuildURL('main.enterscore')#">Score Achievements</a></li>
-				<!--- <li>Menu item2</li> --->
+				<li><a href="#BuildURL('main.login')#">Sign In</a></li>
 				<!--- <li>Menu item3</li> --->
 				</cfoutput>
 			</ul>

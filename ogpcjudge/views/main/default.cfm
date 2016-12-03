@@ -10,14 +10,6 @@
 		<h3><a href="#BuildURL('main.enterscore')#">Score Achievements</a></h3><br /> <!--- --->
 		<!--- <a href="#BuildURL('main.enterscore')#">Start scoring</a><br />  --->
 	</div>
-<cfelse>
-	<div>
-	<form action="#BuildURL('main.default')#" method="post">
-	Please enter your lastname and first initial:
-	<input type="text" id="lastnameFI" name="lastnameFI" value="" placeholder="Lastname FI">
-	<input type="submit" id="savename" value="Save" name="submit">
-	</form>
-	</div>
 </cfif>
 
 

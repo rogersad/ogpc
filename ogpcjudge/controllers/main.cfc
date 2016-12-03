@@ -13,12 +13,6 @@
 	<cffunction name="default" access="public">
 		<cfargument name="rc" required="true">
 		<!--- home page. --->
-		<!--- Save judge name if exists to client var: --->
-		<cfif NOT structKeyExists(client,'judgename')>
-			<cfif structKeyExists(rc,'lastnameFI')>
-				<cfset client.judgename = Replace(rc.lastnameFI,' ','','all')>
-			</cfif>
-		</cfif>
 
 	</cffunction>
 
@@ -38,6 +32,19 @@
 			<cfset rc.achievements = variables.ogpcService.getAchievements(client.categoryID)>
 		</cfif>
 
+	</cffunction>
+
+
+	<!--- *** login(rc) --->
+	<cffunction name="login" access="public">
+		<cfargument name="rc" required="true">
+
+		<!--- Save judge name if exists to client var: --->
+		<cfif structKeyExists(rc,'lastnameFI')>
+			<cfset client.judgename = Replace(rc.lastnameFI,' ','','all')>
+		</cfif>
+
+		<!--- <cfset fw.setview('main.default')> --->
 	</cffunction>
 
 
