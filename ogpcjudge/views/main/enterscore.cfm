@@ -23,11 +23,6 @@
 	</select>
 	</label>
 	&nbsp;
-	<!--- this is the submit button for update form ABOVE: --->
-	<label class="inline">
-		<input id="reloadPrior" type="button" class="btn btn-default" onClick="copyTC();submitUpdate();" value="Update Score" />
-	</label>
-
 	</div>
 
 	<div class="form-group">
@@ -45,6 +40,8 @@
 	</label>
 	&nbsp;
 	</div>
+
+	<div id="warning" class="error hide"></div>
 
 	<div class="form-group achievements" id='achList'>
 	<!--- loaded via ajax on select change, else... --->
