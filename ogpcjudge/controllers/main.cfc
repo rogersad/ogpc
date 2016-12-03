@@ -32,7 +32,6 @@
 			<cfset rc.achievements = variables.ogpcService.getAchievements(client.categoryID)>
 		</cfif>
 
-
 	</cffunction>
 
 
@@ -41,9 +40,10 @@
 		<cfargument name="rc" required="true">
 
 		<cfset var result.returnCode = 0>
+		<cfset var tempVar = ''>
 
-		<!--- save team, achievement scores
-		<cfloop list="#rc.score#" index="listDex">
+		<!--- save checkbox scores --->
+		<cfloop list="#rc.score#" index="listDex"><!---  --->
 			<cfset result = variables.ogpcService.saveScore(rc.teamID,listDex)>
 			<cfif result.returnCode>
 				<cfset rc.errorMessage = 'There was an error. Please re-enter the score.'>
@@ -52,17 +52,32 @@
 				 <cfbreak>
 			</cfif>
 		</cfloop>
-		 --->
-		<!--- saveComment(catID,teamID,text) --->
-		<cfif result.returnCode>
-			<!--- will get re-routed to error --->
-		<cfelse>
-			<cfset result = variables.ogpcService.saveComment(rc.teamID,rc.categoryID,rc.comments)>
-		</cfif>
 
-		<!--- judges don't change categories, so this will trigger preload of cat list --->
-		<cfif client.categoryID NEQ rc.categoryID>
-			<cfset client.categoryID = rc.categoryID> <!--- change catid --->
+		<!--- save radio scores. a bit different. need to create dynamic var and then evaluate it  --->
+		<cfloop collection="#rc#" item="currentValue">
+
+			<cfif (Left(currentValue,5) EQ 'score') AND Len(currentValue) GT 5> <!--- like 'score95' but NOT 'score' --->
+
+				<cfset tempVar = rc[currentValue]>
+				<cfset result = variables.ogpcService.saveScore(rc.teamID,'#tempVar#')> <!--- de-reference tempVar --->
+
+				<cfif result.returnCode>
+					<cfset rc.errorMessage = 'There was an error. Please re-enter the score.'>
+					<cfset rc.errorMessage &= '<br />DO NOT USE THE BACK BUTTON.<br /> Please use the link below.'>
+					 <cfset variables.fw.setview("main.error")>
+					 <cfbreak>
+				</cfif>
+			</cfif>
+		</cfloop>
+
+		<!--- saveComment(catID,teamID,text) --->
+		<cfset result = variables.ogpcService.saveComment(rc.teamID,rc.categoryID,rc.comments)>
+
+		<!--- judges don't usually change categories, so this will trigger preload of cat list --->
+		<cfif NOT StructKeyExists(client,'categoryID')>
+			<cfset client.categoryID = rc.categoryID>
+		<cfelseif client.categoryID NEQ rc.categoryID>
+			<cfset client.categoryID = rc.categoryID>
 		</cfif>
 
 		<!--- get team name for nice output on confirmation page: --->
