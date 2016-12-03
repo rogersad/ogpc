@@ -12,7 +12,13 @@
 	<!--- *** default(rc) --->
 	<cffunction name="default" access="public">
 		<cfargument name="rc" required="true">
-		<!--- home page. nothing here really. --->
+		<!--- home page. --->
+		<!--- Save judge name if exists to client var: --->
+		<cfif NOT structKeyExists(client,'judgename')>
+			<cfif structKeyExists(rc,'lastnameFI')>
+				<cfset client.judgename = Replace(rc.lastnameFI,' ','','all')>
+			</cfif>
+		</cfif>
 
 	</cffunction>
 
