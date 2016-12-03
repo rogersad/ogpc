@@ -8,12 +8,12 @@
 	<div>
 		Current user: #client.judgename#
 		<br /><br />
+		If this is not you, please enter your lastname and first initial:<br />
 	</div>
 </cfif>
 
 <div>
 <form action="#BuildURL('main.login')#" method="post">
-If this is not you, please enter your lastname and first initial:<br />
 
 <input type="text" id="lastnameFI" name="lastnameFI" value="" placeholder="Lastname FI">
 <input type="submit" id="savename" value="Save" name="submit">
