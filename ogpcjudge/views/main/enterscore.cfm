@@ -16,13 +16,15 @@
 	<div>Current user: #client.judgename# <br /><br /></div>
 </cfif>
 
+<!---
 <form id='frmUpdate' action="#BuildURL('main.updatescore')#" onSubmit='return teamNotZero();' method="post" autocomplete="off">
 	<input type="hidden" name="teamID" id="updateTeamID" value="">
 	<input type="hidden" name="catID" id="updateCatID" value="">
-	<input type="hidden" name="categoryID" id="categoryID" value="#client.categoryID#">
 </form>
+ --->
 
 <form id='frmAchievements' action="#BuildURL('main.submitscore')#" method="post" autocomplete="off">
+<input type="hidden" name="categoryID" id="categoryID" value="#client.categoryID#">
   <div class="form-group">
 	<label>Team:
 	<select class="form-control" name="teamID" id="teamID">

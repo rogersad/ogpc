@@ -11,10 +11,11 @@ $('#btnSubmit').click(function(){
 });
 
 //add warning if team + category already scored (change func for both teamID,categoryID):
-/* */
+
 $("#teamID").change(function() {
 	var teamId = $("#teamID option:selected").val();
-	var catId = $("#categoryID option:selected").val();
+	//var catId = $("#categoryID option:selected").val();
+	var catId = $("#categoryID").val();
 	
 	if(teamId > 0 && catId > 0) {
 		$.post("index.cfm?action=ajax.getScoresJSON",{teamID: teamId, categoryID:catId}).done(function(rdata) {
@@ -23,6 +24,7 @@ $("#teamID").change(function() {
 	}
 });
 
+/* 
 $("#categoryID").change(function() {
 	var teamId = $("#teamID option:selected").val();
 	var catId = $("#categoryID option:selected").val();
@@ -33,6 +35,7 @@ $("#categoryID").change(function() {
 		});
 	}
 });
+*/
 
 //DATA will be number of rows in achievements table for selected team + category
 function showScoringError(rdata){
