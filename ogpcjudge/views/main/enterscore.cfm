@@ -8,6 +8,8 @@
 <cfoutput>
 <h2>Score Achievements </h2>
 
+<h3>Category: #rc.displayCategory#</h3>
+
 <cfif NOT structKeyExists(client,'judgename')>
 	<cflocation addtoken="false" url="#BuildURL('main.login')#">
 <cfelse>
@@ -17,6 +19,7 @@
 <form id='frmUpdate' action="#BuildURL('main.updatescore')#" onSubmit='return teamNotZero();' method="post" autocomplete="off">
 	<input type="hidden" name="teamID" id="updateTeamID" value="">
 	<input type="hidden" name="catID" id="updateCatID" value="">
+	<input type="hidden" name="categoryID" id="categoryID" value="#client.categoryID#">
 </form>
 
 <form id='frmAchievements' action="#BuildURL('main.submitscore')#" method="post" autocomplete="off">
@@ -26,22 +29,6 @@
 		<option value="">Select...</option>
 		<cfloop query="rc.teams">
 			<option value="#rc.teams.ID#">###rc.teams.ID#, #rc.teams.school_name# : #rc.teams.name#</option>
-		</cfloop>
-	</select>
-	</label>
-	&nbsp;
-	</div>
-
-	<div class="form-group">
-	<label>Category:
-	<select class="form-control" name="categoryID" id="categoryID">
-		<option value="">Select...</option>
-		<cfloop query="rc.categories">
-			<cfset selected = ''>
-			<cfif rc.categories.ID EQ client.categoryID>
-				<cfset selected = 'selected'>
-			</cfif>
-			<option #selected# value="#rc.categories.ID#">#rc.categories.DESCR#</option>
 		</cfloop>
 	</select>
 	</label>

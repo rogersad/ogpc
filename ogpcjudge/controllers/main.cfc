@@ -22,15 +22,9 @@
 		<cfargument name="rc" required="true">
 
 		<!--- get data to start scoring - teams and categories. --->
-		<cfset rc.categories = variables.ogpcService.getCategories()>
 		<cfset rc.teams = variables.ogpcService.getTeams()>
-
-		<cfif NOT structKeyExists(client,'categoryID')>
-			<cfset client.categoryID = 0>
-		<cfelse>
-			<!--- preload: --->
-			<cfset rc.achievements = variables.ogpcService.getAchievements(client.categoryID)>
-		</cfif>
+		<cfset rc.achievements = variables.ogpcService.getAchievements(client.categoryID)>
+		<cfset rc.displayCategory = variables.ogpcService.getCategories(client.categoryID).DESCR>
 
 	</cffunction>
 
@@ -39,13 +33,40 @@
 	<cffunction name="login" access="public">
 		<cfargument name="rc" required="true">
 
-		<!--- Save judge name if exists to client var: --->
-		<cfif structKeyExists(rc,'lastnameFI')>
-			<cfset client.judgename = Replace(rc.lastnameFI,' ','','all')>
-			<cfset variables.fw.setview('main.default')>
+		<!--- load category list: --->
+		<cfset rc.categories = variables.ogpcService.getCategories()>
+
+		<!--- set category var for display: --->
+		<cfif structKeyExists(client,'categoryID')>
+			<cfset rc.currentCategory = client.categoryID>
+		<cfelse>
+			<cfset rc.currentCategory = 0>
+		</cfif>
+
+		<!--- show judge name (or not): --->
+		<cfif structKeyExists(client,'judgename') AND Len(client.judgename)>
+			<cfset rc.displayName = client.judgename>
+		<cfelse>
+			<cfset rc.displayName = ''>
 		</cfif>
 
 	</cffunction>
+
+
+	<!--- *** savelogin(rc) --->
+	<cffunction name="savelogin" access="public">
+		<cfargument name="rc" required="true">
+
+		<!--- Save judge name to client var: --->
+		<cfset client.judgename = rc.lastnameFI>
+		<cfset client.categoryID = rc.categoryID>
+
+		<cfset variables.fw.setview('main.default')>
+
+	</cffunction>
+
+
+
 
 	<!--- ***reset() - deletes judge name --->
 	<cffunction name="reset">
