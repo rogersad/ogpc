@@ -1,14 +1,14 @@
 <cfoutput>
 <cfset rc.pagetitle = "Sign In" />
-<cfset rc.jslist = '<script src="includes/login.js"></script>'>
+<cfset rc.jslist = '<script src="includes/login.js"></script>'> <!--- --->
 
 <h2>#rc.pagetitle#</h2>
 
 
 <div>
-	Current user: #rc.displayName#
-	<br /><br />
-	<cfif Len(rc.displayName)>
+	<cfif structKeyExists(client,'judgename')>
+		Current user: #client.judgename#
+		<br /><br />
 		If this is not you, please enter your lastname and first initial:
 	<cfelse>
 		Please sign in.
@@ -19,7 +19,9 @@
 <div>
 	<form action="#BuildURL('main.savelogin')#" method="post" onsubmit="return validate();">
 	<div class="form-group">
+	<label>Last name and first initial:<br />
 	<input type="text" id="lastnameFI" name="lastnameFI" value="#rc.displayName#" placeholder="LastnameI">
+	<label>
 	</div>
 
 	<div class="form-group">
