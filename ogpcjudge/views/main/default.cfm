@@ -3,12 +3,7 @@
 
 <h2>OGPC Judging</h2>
 
-
-<cfif StructKeyExists(client,'judgename') and Len(client.judgename)>
-	<div>Welcome #client.judgename#</div>
-<cfelse>
-	<cflocation addtoken="false" url="#BuildURL('main.login')#">
-</cfif>
+<h3>Welcome #rc.displayName#</h3>
 
 <div>
 	<h3><a href="#BuildURL('main.enterscore')#">Score Achievements</a></h3><br /> <!--- --->

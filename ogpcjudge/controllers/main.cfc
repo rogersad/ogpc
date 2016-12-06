@@ -8,12 +8,30 @@
 		<cfreturn this>
 	</cffunction>
 
+	<cffunction name="before">
+		<cfargument name="rc" required="true">
+
+		<!--- if name and category not set, route to login: --->
+		<cfif NOT (structKeyExists(client,'judgename') AND Len(client.judgename))>
+			<cfset rc.displayName = ''>
+			<cfset rc.categories = variables.ogpcService.getCategories()>
+			<cfset rc.currentCategory = 0>
+			<cfset variables.fw.setview('main.login')>
+		</cfif>
+
+	</cffunction>
 
 	<!--- *** default(rc) --->
 	<cffunction name="default" access="public">
 		<cfargument name="rc" required="true">
 		<!--- home page. --->
+		<cfif structKeyExists(client,'judgename') AND Len(client.judgename)>
+			<cfset rc.displayName = client.judgename>
+		<cfelse>
+			<cfset rc.displayName = ''>
+		</cfif>
 
+		 <!--- <cfset rc.displayName = client.judgename> --->
 	</cffunction>
 
 
@@ -43,13 +61,7 @@
 			<cfset rc.currentCategory = 0>
 		</cfif>
 
-		<!--- show judge name (or not): --->
-		<cfif structKeyExists(client,'judgename') AND Len(client.judgename)>
-			<cfset rc.displayName = client.judgename>
-		<cfelse>
-			<cfset rc.displayName = ''>
-		</cfif>
-
+		 <cfset rc.displayName = client.judgename>
 	</cffunction>
 
 
@@ -60,20 +72,20 @@
 		<!--- Save judge name to client var: --->
 		<cfset client.judgename = rc.lastnameFI>
 		<cfset client.categoryID = rc.categoryID>
-
 		<cfset variables.fw.setview('main.default')>
 
 	</cffunction>
 
 
-
-
-	<!--- ***reset() - deletes judge name --->
+	<!--- ***reset() - deletes client vars --->
 	<cffunction name="reset">
 		<cfargument name="rc" required="true">
 
 		<cfif structKeyExists(client,'judgename')>
 			<cfset DeleteClientVariable('judgename')>
+		</cfif>
+		<cfif structKeyExists(client,'categoryID')>
+			<cfset DeleteClientVariable('categoryID')>
 		</cfif>
 
 	</cffunction>
@@ -120,13 +132,7 @@
 			<cfset result = variables.ogpcService.saveComment(rc.teamID,rc.categoryID,rc.comments)>
 		</cfif>
 
-		<!--- judges don't usually change categories, so this will trigger preload of cat list --->
-		<cfif NOT StructKeyExists(client,'categoryID')>
-			<cfset client.categoryID = rc.categoryID>
-		<cfelseif client.categoryID NEQ rc.categoryID>
-			<cfset client.categoryID = rc.categoryID>
-		</cfif>
-
+		<!--- categoryID was moved to login --->
 		<!--- get team name for nice output on confirmation page: --->
 		<cfset rc.team = variables.ogpcService.getTeams(rc.teamID)>
 
