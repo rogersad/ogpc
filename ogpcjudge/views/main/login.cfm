@@ -19,8 +19,8 @@
 <div>
 	<form action="#BuildURL('main.savelogin')#" method="post" onsubmit="return validate();">
 	<div class="form-group">
-	<label>Last name and first initial:<br />
-	<input type="text" id="lastnameFI" name="lastnameFI" value="#rc.displayName#" placeholder="LastnameI">
+	<label>Please enter your name:<br />
+	<input type="text" id="lastnameFI" name="lastnameFI" value="#rc.displayName#" placeholder="Your Name">
 	<label>
 	</div>
 

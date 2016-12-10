@@ -1,7 +1,10 @@
-﻿<cfset rc.pageTitle = 'There was an error'>
+﻿<cfsetting showdebugoutput="true">
+<cfset rc.pageTitle = 'There was an error'>
 
 <cfoutput>
 	<h2>#rc.pageTitle#</h2>
+
+	<!--- <cfdump var="#rc#"> --->
 
 	<cfif structKeyExists(rc,'errorMessage') AND Len(rc.errorMessage)>
 		<div class="error">
