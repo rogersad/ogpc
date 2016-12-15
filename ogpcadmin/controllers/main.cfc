@@ -26,7 +26,7 @@
 		<cfset rc.categories = variables.ogpcService.getCategories()>
 		<cfloop query="rc.categories">
 			<cfset rc.results[rc.categories.DESCR] = variables.ogpcService.getTeamAchievements(rc.teamID,rc.categories.ID)>
-			<cfset rc.COMMENTS[rc.categories.DESCR] = variables.ogpcService.getComments(rc.teamID,rc.categories.ID)>
+			<cfset rc.COMMENTS[rc.categories.ID] = variables.ogpcService.getComments(rc.teamID,rc.categories.ID)>
 		</cfloop>
 
 	</cffunction>
