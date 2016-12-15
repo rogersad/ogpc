@@ -35,7 +35,7 @@
 		<cfargument name="catId" required="true">
 
 		<cfquery name="get_scores" datasource="#application.dsn#">
-		SELECT ACH.ID,ACH.POINT_VALUE,ACH.CATEGORY_ID
+		SELECT ACH.ID,ACH.POINT_VALUE,ACH.CATEGORY_ID, ACH.DESCR
 		      ,IF( (SELECT TA.OGPC_ACHIEVEMENT_ID
 		            FROM OGPC_TEAM_ACHIEVEMENTS TA
 		            WHERE TA.OGPC_ACHIEVEMENT_ID = ACH.ID
