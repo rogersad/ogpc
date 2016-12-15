@@ -13,9 +13,9 @@
 	</cffunction>
 
 
-	<!--- *** getAchievements() --->
-	<cffunction name="getAchievements">
-		<cfargument name="catID" default="0">
+	<!--- *** getAllAchievements(categoryID [,YEAR]): returns all cats with cat name --->
+	<cffunction name="getAllAchievements">
+		<cfargument name="catID" required="true">
 		<cfargument name="eventYear" default="#application.eventYear#">
 
 		<cfquery name="get_achievements" datasource="#application.dsn#" cachedwithin="#CreateTimeSpan(0,1,0,0)#">
@@ -31,21 +31,22 @@
 	</cffunction>
 
 
-	<!--- *** getScores([teamId]) no params: full list --->
-	<cffunction name="getScores">
-		<cfargument name="teamId" default="0">
+	<!--- *** getTeamAchievements(TeamID,CategoryID) --->
+	<cffunction name="getTeamAchievements">
+		<cfargument name="teamId" required="true">
+		<cfargument name="catId" required="true">
 
 		<cfquery name="get_scores" datasource="#application.dsn#">
-		SELECT TEAM.NAME, ACH.POINT_VALUE, ACH.CATEGORY_ID
-			  ,C.DESCR
-		FROM OGPC_TEAMS TEAM
-			,OGPC_TEAM_ACHIEVEMENTS TA
-			,OGPC_ACHIEVEMENTS ACH
-			,OGPC_CATEGORIES C
-		WHERE TEAM.ID = TA.OGPC_TEAM_ID
-		  AND ACH.ID = TA.OGPC_ACHIEVEMENT_ID
-		  AND ACH.CATEGORY_ID = C.ID
-		ORDER BY TEAM.NAME,C.DESCR
+		SELECT ACH.ID,ACH.POINT_VALUE,ACH.CATEGORY_ID
+		      ,IF( (SELECT TA.OGPC_ACHIEVEMENT_ID
+		            FROM OGPC_TEAM_ACHIEVEMENTS TA
+		            WHERE TA.OGPC_ACHIEVEMENT_ID = ACH.ID
+		              AND TA.OGPC_TEAM_ID = #arguments.teamId#
+		            ) IS NOT NULL, 'X','')
+		       EARNED_ACHIEVEMENT
+		FROM OGPC_ACHIEVEMENTS ACH
+		WHERE ACH.CATEGORY_ID = #arguments.catId#
+		ORDER BY ACH.ID ASC
 		</cfquery>
 
 		<cfreturn get_scores>
