@@ -1,15 +1,13 @@
 <cfoutput>
 
 <cfset rc.pageTitle = 'Team Achievement Results'>
-<cfset rc.jslist = '<script src="includes/enterscore.js"></script>'>
-<cfset rc.jslist &= '<link rel="stylesheet" type="text/css" href="includes/jquery.dataTables.min.css"/>'>
 
 <div class="secondary">
 <cfloop from="1" to="#rc.categories.recordCount#" index="categoryRow">
-	<table id='results#categoryRow#' class="display dataTable">
+	<table id='results#categoryRow#' class="table dataTable">
 	<thead>
 	<tr>
-		<th colspan="3">#rc.categories.DESCR[categoryRow]#</th>
+		<th colspan="3"><h4>#Ucase(rc.categories.DESCR[categoryRow])#</h4></th>
 	</tr>
 	<tr>
 		<th>RESULT</th>
@@ -27,19 +25,18 @@
 			<td>#rc.results[rc.categories.DESCR[categoryRow]].DESCR[resultRow]#</td>
 		</tr>
 	</cfloop>
-	<!--- comments
-	<tr>
-		<td colspan="3">#rc.COMMENTS#</td>
-	</tr>
-	 --->
+	<!--- comments --->
+	<cfif rc.COMMENTS[categoryRow].COMMENT_TXT NEQ ''>
+		<tr>
+			<td colspan="3">#rc.COMMENTS[categoryRow].COMMENT_TXT#</td>
+		</tr>
+	</cfif>
+
 	</tbody>
 	</table>
-	<script>
-		$(document).ready(function(){
-	    	$('##results#categoryRow#').DataTable();
-		});
-	</script>
+	<hr />
 </cfloop>
+
 
 </div>
 </cfoutput>
