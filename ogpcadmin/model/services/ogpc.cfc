@@ -13,6 +13,22 @@
 	</cffunction>
 
 
+	<!--- *** getComments(TeamID,CategoryID) returns any judge comments --->
+	<cffunction name="getComments" returntype="query">
+		<cfargument name="teamId" required="true">
+		<cfargument name="catId" required="true">
+
+		<cfquery name="get_comments" datasource="#application.dsn#">
+		SELECT ID, OGPC_CATEGORY_ID, COMMENT_TXT
+		FROM OGPC_TEAM_CATEGORY_COMMENT CC
+		WHERE CC.OGPC_TEAM_ID = #arguments.teamId#
+		  AND CC.OGPC_CATEGORY_ID = #arguments.catId#
+		</cfquery>
+
+		<cfreturn get_comments>
+	</cffunction>
+
+
 	<!--- *** getTeamAchievements(TeamID,CategoryID) --->
 	<cffunction name="getTeamAchievements">
 		<cfargument name="teamId" required="true">
