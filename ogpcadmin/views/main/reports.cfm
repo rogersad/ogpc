@@ -25,13 +25,9 @@
 			<td>#rc.results[rc.categories.DESCR[categoryRow]].DESCR[resultRow]#</td>
 		</tr>
 	</cfloop>
-	<!--- comments --->
-	<cfif rc.COMMENTS[categoryRow].COMMENT_TXT NEQ ''>
-		<tr>
-			<td colspan="3">#rc.COMMENTS[categoryRow].COMMENT_TXT#</td>
-		</tr>
-	</cfif>
-
+	<tr>
+		<td colspan="3">#rc.COMMENTS[categoryRow].COMMENT_TXT#</td>
+	</tr>
 	</tbody>
 	</table>
 	<hr />
