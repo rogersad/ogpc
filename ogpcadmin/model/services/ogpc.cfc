@@ -13,24 +13,6 @@
 	</cffunction>
 
 
-	<!--- *** getAllAchievements(categoryID [,YEAR]): returns all cats with cat name --->
-	<cffunction name="getAllAchievements">
-		<cfargument name="catID" required="true">
-		<cfargument name="eventYear" default="#application.eventYear#">
-
-		<cfquery name="get_achievements" datasource="#application.dsn#" cachedwithin="#CreateTimeSpan(0,1,0,0)#">
-		SELECT ID,CATEGORY_ID,CHALLENGE_FLAG,DESCR,DISPLAY_ORDER_NUM,POINT_VALUE
-		FROM OGPC_ACHIEVEMENTS
-		WHERE EVENT_YEAR = '#arguments.eventYear#'
-		  AND VALID_FLAG = 'Y'
-		  AND CATEGORY_ID = #arguments.catID#
-		ORDER BY CATEGORY_ID, DISPLAY_ORDER_NUM
-		</cfquery>
-
-		<cfreturn get_achievements>
-	</cffunction>
-
-
 	<!--- *** getTeamAchievements(TeamID,CategoryID) --->
 	<cffunction name="getTeamAchievements">
 		<cfargument name="teamId" required="true">
