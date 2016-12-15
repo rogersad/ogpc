@@ -12,7 +12,8 @@
 	<!--- *** default(rc) --->
 	<cffunction name="default" access="public">
 		<cfargument name="rc" required="true">
-		<!--- home page. nothing here really. --->
+
+		<cfset rc.teams = variables.ogpcService.getTeams()>
 
 	</cffunction>
 
@@ -20,8 +21,12 @@
 	<!--- *** reports(rc) --->
 	<cffunction name="reports" access="public">
 		<cfargument name="rc" required="true">
-		<!--- home page. nothing here really. --->
-		<cfset rc.results = variables.ogpcService.getScores()>
+
+		<cfset rc.results = structNew()>
+		<cfset rc.categories = variables.ogpcService.getCategories()>
+		<cfloop query="rc.categories">
+			<cfset rc.results[rc.categories.DESCR] = variables.ogpcService.getTeamAchievements(rc.teamID,rc.categories.ID)>
+		</cfloop>
 
 	</cffunction>
 

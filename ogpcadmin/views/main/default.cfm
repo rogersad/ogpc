@@ -3,8 +3,15 @@
 
 <h2>#rc.pagetitle#</h2>
 <div>
-	<h3><!--- <a href="#BuildURL('main.enterscore')#">Score Achievements</a> ---></h3><br /> <!--- --->
-	<!--- <a href="#BuildURL('main.enterscore')#">Start scoring</a><br />  --->
+	<h3>Get Team Scores</h3><br /> <!--- --->
+
+	<form action="#buildURL('main.reports')#" method="post">
+	<cfloop query="rc.teams">
+		<input type="radio" name="teamID" value="#rc.teams.ID#"> #rc.teams.SCHOOL_NAME# <strong>#rc.teams.NAME#</strong><br />
+	</cfloop>
+	<input type="submit" name="submit" value="Get Scores">
+	</form>
+	<!--- <cfdump var="#rc#"> --->
 </div>
 
 </cfoutput>

@@ -1,2 +1,3 @@
 
-<cfdump var="#rc#">
+<cfdump var="#rc.results#">
+<!--- <cfdump var="#rc.fw#"> --->
