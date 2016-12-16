@@ -1,5 +1,22 @@
 <cfcomponent accessors="true">
 
+	<!--- first Challenge is worth 4 points. The second is worth 3, then 2, then 1, then 1. --->
+	<cffunction name="BonusCalc" access="public" returntype="numeric">
+		<cfargument name="calc_value" required="Yes" type="numeric">
+
+		<cfset rValue = 0>
+		<cfswitch expression="#arguments.calc_value#">
+			<cfcase value="5"><cfset rValue = 11></cfcase>
+			<cfcase value="4"><cfset rValue = 10></cfcase>
+			<cfcase value="3"><cfset rValue = 9></cfcase>
+			<cfcase value="2"><cfset rValue = 7></cfcase>
+			<cfcase value="1"><cfset rValue = 4></cfcase>
+		</cfswitch>
+
+		<cfreturn rValue>
+	</cffunction>
+
+
 	<!--- *** getCategores() returns full category list --->
 	<cffunction name="getCategories" returntype="query">
 
