@@ -22,8 +22,14 @@
 	<cffunction name="reports" access="public">
 		<cfargument name="rc" required="true">
 
+		<cfset var earnedPoints = 0>
+		<cfset var zeroPointCount = 0>
+		<cfset rc.grandTotal = 0>
+
 		<cfset rc.results = structNew()>
 		<cfset rc.categories = variables.ogpcService.getCategories()>
+		<cfset rc.team = variables.ogpcService.getTeams(rc.teamID)>
+
 		<cfloop query="rc.categories">
 			<cfset rc.results[rc.categories.DESCR] = variables.ogpcService.getTeamAchievements(rc.teamID,rc.categories.ID)>
 			<cfset rc.COMMENTS[rc.categories.ID] = variables.ogpcService.getComments(rc.teamID,rc.categories.ID)>
@@ -45,7 +51,9 @@
 			<cfset rc.categoryAchievementScore[categoryRow] = earnedPoints>
 			<cfset rc.categoryBonusCount[categoryRow] = zeroPointCount>
 			<cfset rc.categoryTotalScore[categoryRow] = variables.ogpcService.BonusCalc(zeroPointCount) + earnedPoints>
+			<cfset rc.grandTotal += rc.categoryTotalScore[categoryRow]>
 		</cfloop>
+
 
 	</cffunction>
 

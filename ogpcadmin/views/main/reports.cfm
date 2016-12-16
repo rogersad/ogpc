@@ -3,6 +3,10 @@
 <cfset rc.pageTitle = 'Team Achievement Results'>
 
 <div class="secondary">
+
+<h2>Team: ###rc.team.ID# #rc.team.NAME#, #rc.team.SCHOOL_NAME#</h2>
+<h2>Total Score: #rc.grandTotal#</h2> <!--- --->
+
 <cfloop from="1" to="#rc.categories.recordCount#" index="categoryRow">
 	<table id='results#categoryRow#' class="table dataTable">
 	<thead>
@@ -17,7 +21,6 @@
 	</thead>
 	<tbody>
 	<!--- ID POINT_VALUE CATEGORY_ID EARNED_ACHIEVEMENT RC.COMMENTS[CATEGORY_ID]--->
-	<!--- <cfloop from="1" to="#rc.results[rc.categories.DESCR].recordCount#" index="resultsRow"> --->
 	<cfloop from="1" to="#rc.results[rc.categories.DESCR].recordCount#" index="resultRow">
 		<tr>
 			<td>#rc.results[rc.categories.DESCR[categoryRow]].EARNED_ACHIEVEMENT[resultRow]#</td>
@@ -28,6 +31,14 @@
 	<tr>
 		<td colspan="3">#rc.COMMENTS[categoryRow].COMMENT_TXT#</td>
 	</tr>
+	<tr>
+		<td colspan="3">
+			Points for this category: #rc.categoryAchievementScore[categoryRow]# <br />
+			Bonus Achievements: #rc.categoryBonusCount[categoryRow]# <br />
+			<h4>Total Points: #rc.categoryTotalScore[categoryRow]#</h4>
+		</td>
+	</tr>
+
 	</tbody>
 	</table>
 	<hr />
@@ -36,4 +47,4 @@
 
 </div>
 </cfoutput>
-
+<!--- <cfdump var="#rc#"> --->
