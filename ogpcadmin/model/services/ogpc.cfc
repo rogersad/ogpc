@@ -1,5 +1,6 @@
 <cfcomponent accessors="true">
 
+	<!--- *** BonusCalc(count) --->
 	<!--- first Challenge is worth 4 points. The second is worth 3, then 2, then 1, then 1. --->
 	<cffunction name="BonusCalc" access="public" returntype="numeric">
 		<cfargument name="calc_value" required="Yes" type="numeric">
