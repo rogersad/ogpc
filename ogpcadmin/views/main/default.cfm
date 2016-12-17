@@ -4,11 +4,11 @@
 <h2>#rc.pagetitle#</h2>
 	<h3>Get Team Scores</h3> <!--- --->
 
-	<form action="#buildURL('main.reports')#" method="post">
+	<form action="#buildURL('main.teamScore')#" method="post">
 	<div class="form-group">
 	<select name="teamID">
 	<cfloop query="rc.teams">
-		<option value="#rc.teams.ID#">#rc.teams.SCHOOL_NAME# <strong>#rc.teams.NAME#</strong></option>
+		<option value="#rc.teams.ID#">###rc.teams.ID# #rc.teams.SCHOOL_NAME# <strong>#rc.teams.NAME#</strong></option>
 	</cfloop>
 	</div>
 	<div class="form-group">
