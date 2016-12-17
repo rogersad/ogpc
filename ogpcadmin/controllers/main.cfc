@@ -19,7 +19,7 @@
 
 
 	<!--- *** reports(rc) --->
-	<cffunction name="reports" access="public">
+	<cffunction name="teamScore" access="public">
 		<cfargument name="rc" required="true">
 
 		<cfset var earnedPoints = 0>
@@ -58,7 +58,12 @@
 	</cffunction>
 
 
+		<!--- *** reports(rc) --->
+	<cffunction name="something" access="public">
+		<cfargument name="rc" required="true">
 
+
+	</cffunction>
 
 </cfcomponent>
 
