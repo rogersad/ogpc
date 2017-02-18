@@ -37,7 +37,11 @@
 	&nbsp;
 	</div>
 
-	<div id="warning" class="error hide"></div>
+	<div id="warning" class="error hide">
+		WARNING! This team has already been scored for this category.<br />
+		<!--- <script>var theTeamId = $('##teamID').val();</script> --->
+		<button id="loadScoreBtn" name="loadScoreBtn" value="Load Scores" onClick="#BuildURL('main.enterscore')#?getTeam=$('##teamID').val();" value="Load Team Score">Load Score</button>
+	</div>
 
 	<div class="form-group achievements" id='achList'>
 	<!--- loaded via ajax on select change, else... --->

@@ -42,13 +42,6 @@ function showScoringError(rdata){
 	var rowCount = rdata.DATA;  
 
 	if(rowCount > 0){
-		var warningText = 'WARNING! This team has already been scored for this category.<br />';
-		/*
-		warningText += '<div id="update" class="form-group"><label class="inline">';
-		warningText += '<input id="reloadPrior" type="button" class="btn btn-default"';
-		warningText += 'onClick="copyTC();submitUpdate();" value="Update Existing Score" /></label></div>';
-		*/	
-		$("#warning").html(warningText);
 		$("#warning").addClass('show');
 	}
 	else { // all good, hide.

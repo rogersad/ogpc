@@ -43,7 +43,6 @@
 		<cfset rc.teams = variables.ogpcService.getTeams()>
 		<cfset rc.achievements = variables.ogpcService.getAchievements(client.categoryID)>
 		<cfset rc.displayCategory = variables.ogpcService.getCategories(client.categoryID).DESCR>
-
 	</cffunction>
 
 
