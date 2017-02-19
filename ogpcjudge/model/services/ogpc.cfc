@@ -1,37 +1,60 @@
 <cfcomponent accessors="true">
 
-	<!--- *** BonusCalc(count) --->
-	<!--- first Challenge is worth 4 points. The second is worth 3, then 2, then 1, then 1. --->
-	<cffunction name="BonusCalc" access="public" returntype="numeric">
-		<cfargument name="calc_value" required="Yes" type="numeric">
+	<!--- *** getAchievements() reinstated for preload if client.categoryID exists: --->
+	<cffunction name="getAchievements">
+		<cfargument name="catID" required="true">
+		<cfargument name="eventYear" default="#application.eventYear#">
 
-		<cfset rValue = 0>
-		<cfswitch expression="#arguments.calc_value#">
-			<cfcase value="5"><cfset rValue = 11></cfcase>
-			<cfcase value="4"><cfset rValue = 10></cfcase>
-			<cfcase value="3"><cfset rValue = 9></cfcase>
-			<cfcase value="2"><cfset rValue = 7></cfcase>
-			<cfcase value="1"><cfset rValue = 4></cfcase>
-		</cfswitch>
+		<cfquery name="get_achievements" datasource="#application.dsn#" cachedwithin="#CreateTimeSpan(0,0,0,0)#"><!---  --->
+		SELECT ID,CATEGORY_ID,CHALLENGE_FLAG,DESCR
+			,DISPLAY_ORDER_NUM,POINT_VALUE,HAS_CHILD_FLAG,PARENT_ID
+		FROM OGPC_ACHIEVEMENTS
+		WHERE EVENT_YEAR = '#arguments.eventYear#'
+		  AND VALID_FLAG = 'Y'
+		  AND CATEGORY_ID = #arguments.catID#
+		ORDER BY CATEGORY_ID, DISPLAY_ORDER_NUM
+		</cfquery>
 
-		<cfreturn rValue>
+		<cfreturn get_achievements>
+	</cffunction>
+
+
+	<!--- *** getAchievementsJSON(categoryID) --->
+	<cffunction name="getAchievementsJSON" returntype="any" returnformat="json">
+		<cfargument name="catID" required="true">
+		<cfargument name="eventYear" default="#application.eventYear#">
+
+		<cfquery name="get_achievements" datasource="#application.dsn#" cachedwithin="#CreateTimeSpan(0,0,0,0)#"> <!---  --->
+		SELECT ID,CATEGORY_ID,CHALLENGE_FLAG,DESCR
+			,DISPLAY_ORDER_NUM,POINT_VALUE,HAS_CHILD_FLAG,PARENT_ID
+		FROM OGPC_ACHIEVEMENTS
+		WHERE EVENT_YEAR = '#arguments.eventYear#'
+		  AND VALID_FLAG = 'Y'
+		  AND CATEGORY_ID = #arguments.catID#
+		ORDER BY CATEGORY_ID, DISPLAY_ORDER_NUM
+		</cfquery>
+
+		<cfreturn get_achievements>
 	</cffunction>
 
 
 	<!--- *** getCategores() returns full category list --->
 	<cffunction name="getCategories" returntype="query">
+		<cfargument name="catID" default=0>
 
-		<cfquery name="get_categories" datasource="#application.dsn#" cachedwithin="#CreateTimeSpan(0,1,0,0)#">
+		<cfquery name="get_categories" datasource="#application.dsn#" cachedwithin="#CreateTimeSpan(0,0,0,0)#">
 		SELECT ID, DESCR
 		FROM OGPC_CATEGORIES
 		WHERE VALID_FLAG = 'Y'
+		  <cfif arguments.catID GT 0>
+		  	AND ID = #arguments.catID#
+		  </cfif>
 		</cfquery>
 
 		<cfreturn get_categories>
 	</cffunction>
 
 
-	<!--- *** getComments(TeamID,CategoryID) returns any judge comments --->
 	<cffunction name="getComments" returntype="query">
 		<cfargument name="teamId" required="true">
 		<cfargument name="catId" required="true">
@@ -44,6 +67,55 @@
 		</cfquery>
 
 		<cfreturn get_comments>
+	</cffunction>
+
+
+	<!--- *** getJudgeTeams() returns full team list --->
+	<cffunction name="getJudgeTeams">
+
+		<cfquery name="get_judge_teams" datasource="#application.dsn#" cachedwithin="#CreateTimeSpan(0,0,0,0)#">
+		SELECT ID,DESCR
+		FROM OGPC_JUDGE_TEAMS
+		</cfquery>
+
+		<cfreturn get_judge_teams>
+	</cffunction>
+
+
+	<!--- *** getAchievementsJSON(categoryID) --->
+	<cffunction name="getScoresJSON" returntype="any" returnformat="json">
+		<cfargument name="teamID" required="true">
+		<cfargument name="catID" required="true">
+
+		<cfquery name="get_score_count" datasource="#application.dsn#"> <!---  --->
+		SELECT count(T.ID) RECORDNUM
+		FROM OGPC_TEAM_ACHIEVEMENTS T, OGPC_ACHIEVEMENTS A
+		WHERE A.CATEGORY_ID = #arguments.catID#
+		  AND T.OGPC_TEAM_ID = #arguments.teamID#
+		  AND T.OGPC_ACHIEVEMENT_ID = A.ID
+		</cfquery>
+
+		<cfreturn get_score_count>
+	</cffunction>
+
+
+	<!--- *** getTeams([teamId][,eventYear]) no params: full list --->
+	<cffunction name="getTeams">
+		<cfargument name="teamId" default="0">
+		<cfargument name="eventYear" default="#application.eventYear#">
+
+		<cfquery name="get_teams" datasource="#application.dsn#" cachedwithin="#CreateTimeSpan(0,0,0,0)#">
+		SELECT T.ID, T.NAME, T.M_H_CODE, S.SCHOOL_NAME
+		FROM OGPC_TEAMS T, OGPC_SCHOOLS S
+		WHERE T.OGPC_SCHOOL_ID = S.ID
+		  AND EVENT_YEAR = '#arguments.eventYear#'
+		  <cfif arguments.teamID GT 0>
+		  	AND T.ID = #arguments.teamID#
+		  </cfif>
+		ORDER BY S.SCHOOL_NAME, T.NAME
+		</cfquery>
+
+		<cfreturn get_teams>
 	</cffunction>
 
 
@@ -69,47 +141,59 @@
 	</cffunction>
 
 
-	<!--- *** getTeams([teamId][,eventYear]) no params: full list --->
-	<cffunction name="getTeams">
-		<cfargument name="teamId" default="0">
-		<cfargument name="eventYear" default="#application.eventYear#">
+	<!--- ***saveComment(teamID,categoryID,text)  --->
+	<cffunction name="saveComment">
+		<cfargument name="teamID" type="string" required="true">
+		<cfargument name="catID" type="string" required="true">
+		<cfargument name="commentText" type="string" required="true">
 
-		<cfquery name="get_teams" datasource="#application.dsn#" cachedwithin="#CreateTimeSpan(0,1,0,0)#">
-		SELECT T.ID, T.NAME, T.M_H_CODE, S.SCHOOL_NAME
-		FROM OGPC_TEAMS T, OGPC_SCHOOLS S
-		WHERE T.OGPC_SCHOOL_ID = S.ID
-		  AND EVENT_YEAR = '#arguments.eventYear#'
-		  <cfif arguments.teamID GT 0>
-		  	AND T.ID = #arguments.teamID#
-		  </cfif>
-		ORDER BY S.SCHOOL_NAME, T.NAME
+		<cfquery name="save_score" datasource="#application.dsn#">
+			INSERT INTO OGPC_TEAM_CATEGORY_COMMENT
+				(OGPC_TEAM_ID, 	OGPC_CATEGORY_ID, COMMENT_TXT)
+			VALUES
+				(#arguments.teamID#,#arguments.catID#,'#arguments.commentText#')
 		</cfquery>
 
-		<cfreturn get_teams>
 	</cffunction>
 
 
-	<!--- *** getReport()  --->
-	<cffunction name="getReport">
+	<!--- ***loggit(text) --->
+	<cffunction name="loggit">
+		<cfargument name="logtext" required="true">
 
-		<cfquery name="get_report" datasource="#application.dsn#">
-		SELECT T.ID TEAM_ID, T.NAME, T.M_H_CODE
-				,S.SCHOOL_NAME
-				,ACH.ID ACHIEVEMENT_ID, ACH.POINT_VALUE
-				,TA.OGPC_ACHIEVEMENT_ID TA_ACH_ID
-				,C.DESCR CATEGORY_DESCR, C.ID CATEGORY_ID
-		FROM OGPC_TEAMS T, OGPC_SCHOOLS S
-		     ,OGPC_TEAM_ACHIEVEMENTS TA
-		     ,OGPC_ACHIEVEMENTS ACH
-		     ,OGPC_CATEGORIES C
-		WHERE T.OGPC_SCHOOL_ID = S.ID
-		  AND TA.OGPC_ACHIEVEMENT_ID = ACH.ID
-		  AND T.ID = TA.OGPC_TEAM_ID
-		  AND C.ID = ACH.CATEGORY_ID
-		ORDER BY S.SCHOOL_NAME, T.NAME, C.DESCR
-		</cfquery>
+		<cfset var filePath = GetDirectoryFromPath(GetCurrentTemplatePath())>
+		<cfset var textToLog = DateFormat(Now(),'yyyymmdd') & TimeFormat(Now(),':HH:mm:ss') & ' #arguments.logtext#'>
+		<cffile action="append" addnewline="true" file="#filePath#/scorelog.txt" output="#textToLog#">
 
-		<cfreturn get_report>
+	</cffunction>
+
+
+	<!--- ***saveScore(teamID,achievementID)  --->
+	<cffunction name="saveScore" returntype="struct">
+		<cfargument name="teamID" type="string" required="true">
+		<cfargument name="achID" type="string" required="true">
+
+		<cfset var rStruct = structNew()>
+		<cfset rStruct.returnCode = 0>
+		<cfset rStruct.returnMessage = ''>
+
+		<!--- insert success is critical: --->
+		<cftry>
+			<cfquery name="save_score" datasource="#application.dsn#">
+				INSERT INTO OGPC_TEAM_ACHIEVEMENTS
+					(OGPC_TEAM_ID, 	OGPC_ACHIEVEMENT_ID)
+				VALUES
+					(#arguments.teamID#,#arguments.achID#)
+			</cfquery>
+
+			<cfcatch type="database">
+				<cfset rStruct.returnMessage = cfcatch.Message>
+				<cfset rStruct.returnCode = 1>
+			</cfcatch>
+		</cftry>
+
+		<cfreturn rStruct>
+
 	</cffunction>
 
 

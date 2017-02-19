@@ -22,6 +22,17 @@
 	<input type="hidden" name="catID" id="updateCatID" value="">
 </form>
  --->
+<div id="warning" class="error hide">
+	WARNING! This team has already been scored for this category.<br /><br />
+	<div class="form-group">
+	<form id='frmCallUpdate' action="#BuildURL('main.updatescore')#" method="post" autocomplete="off">
+	<input type="hidden" name="updateTeamID" id="updateTeamID" value="" />
+	<input type="hidden" name="updateCatID" id="updateCatID" value="#client.categoryID#" />
+	<input type="submit" id="updateBtn" name="updateBtn" value="Update Scores" />
+	</form>
+	</div>
+</div>
+
 
 <form id='frmAchievements' action="#BuildURL('main.submitscore')#" method="post" autocomplete="off">
 <input type="hidden" name="categoryID" id="categoryID" value="#client.categoryID#">
@@ -35,12 +46,6 @@
 	</select>
 	</label>
 	&nbsp;
-	</div>
-
-	<div id="warning" class="error hide">
-		WARNING! This team has already been scored for this category.<br />
-		<!--- <script>var theTeamId = $('##teamID').val();</script> --->
-		<button id="loadScoreBtn" name="loadScoreBtn" value="Load Scores" onClick="#BuildURL('main.enterscore')#?getTeam=$('##teamID').val();" value="Load Team Score">Load Score</button>
 	</div>
 
 	<div class="form-group achievements" id='achList'>

@@ -43,6 +43,10 @@
 		<cfset rc.teams = variables.ogpcService.getTeams()>
 		<cfset rc.achievements = variables.ogpcService.getAchievements(client.categoryID)>
 		<cfset rc.displayCategory = variables.ogpcService.getCategories(client.categoryID).DESCR>
+
+		<cfif structKeyExists(rc,'getTeam') AND rc.getTeam GT 0>
+			<cfset rc.teamAchievements = variables.ogpcService.getTeamAchievements(rc.getTeam,client.categoryID)>
+		</cfif>
 	</cffunction>
 
 
@@ -142,10 +146,10 @@
 	<cffunction name="updatescore">
 		<cfargument name="rc" required="true">
 
-		<cfset rc.categories = variables.ogpcService.getCategories(rc.catID)>
-		<cfset rc.teams = variables.ogpcService.getTeams(rc.teamID)>
-		<cfset rc.achievements = variables.ogpcService.getAchievements(rc.catID)>
-
+		<cfset rc.categories = variables.ogpcService.getCategories(rc.updateCatID)>
+		<cfset rc.teams = variables.ogpcService.getTeams(rc.updateTeamID)>
+		<cfset rc.teamComments = variables.ogpcService.getComments(rc.updateTeamID,rc.updateCatID)>
+		<cfset rc.teamAchievements = variables.ogpcService.getTeamAchievements(rc.updateTeamID,rc.updateCatID)>
 	</cffunction>
 
 </cfcomponent>

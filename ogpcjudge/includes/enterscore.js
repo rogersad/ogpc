@@ -43,6 +43,7 @@ function showScoringError(rdata){
 
 	if(rowCount > 0){
 		$("#warning").addClass('show');
+		$("#updateTeamID").val($('#teamID').val());
 	}
 	else { // all good, hide.
 		$("#warning").removeClass('show');
