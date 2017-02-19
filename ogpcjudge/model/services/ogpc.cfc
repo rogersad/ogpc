@@ -1,5 +1,20 @@
 <cfcomponent accessors="true">
 
+	<!--- *** deleteAchievements() removes all prior scores. --->
+	<cffunction name="deleteAchievements">
+		<cfargument name="teamID" required="true">
+		<cfargument name="achID" required="true">
+
+		<cfquery name='delete_achievements' datasource="#application.dsn#" result="delete_result">
+		DELETE FROM OGPC_TEAM_ACHIEVEMENTS
+		WHERE OGPC_TEAM_ID = #arguments.teamID#
+		  AND OGPC_ACHIEVEMENT_ID = #arguments.achID#
+		</cfquery>
+
+		<cfreturn delete_result>
+	</cffunction>
+
+
 	<!--- *** getAchievements() reinstated for preload if client.categoryID exists: --->
 	<cffunction name="getAchievements">
 		<cfargument name="catID" required="true">

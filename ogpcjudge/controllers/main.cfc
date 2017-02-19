@@ -152,6 +152,23 @@
 		<cfset rc.teamAchievements = variables.ogpcService.getTeamAchievements(rc.updateTeamID,rc.updateCatID)>
 	</cffunction>
 
+
+	<!--- updatescore(teamID,catID) deletes prior scores, re-routes to submit --->
+	<cffunction name="processupdatescore">
+		<cfargument name="rc" required="true">
+
+		<!--- get achievements list --->
+		<cfset rc.teamAchievements = variables.ogpcService.getTeamAchievements(rc.teamId,rc.categoryID)>
+
+		<cfloop query="rc.teamAchievements">
+			<cfif rc.teamAchievements.Earned_Achievement EQ 'X'>
+				<cfset result = variables.ogpcService.deleteAchievements(rc.teamId,rc.teamAchievements.ID)>
+			</cfif>
+		</cfloop>
+		<!--- re-route to submit score: --->
+		<cfset variables.fw.redirect(action='main.submitscore',preserve='all')>
+	</cffunction>
+
 </cfcomponent>
 
 

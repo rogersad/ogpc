@@ -5,7 +5,7 @@
 	<h2>UPDATE Achievements </h2>
 	<h3>Team ###rc.updateTeamID# , #rc.teams.school_name# : #rc.teams.name#</h3>
 	<h3>Category: #rc.categories.DESCR#</h3>
-	<form id='frmAchievements' action="#BuildURL('main.submitscore')#" method="post" autocomplete="off">
+	<form id='frmAchievements' action="#BuildURL('main.processupdatescore')#" method="post" autocomplete="off">
 	<input type="hidden" name="teamId" value="#rc.updateTeamID#">
 	<input type="hidden" name="categoryID" value="#rc.updateCatID#">
 
