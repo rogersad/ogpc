@@ -44,9 +44,15 @@ function showScoringError(rdata){
 	if(rowCount > 0){
 		$("#warning").addClass('show');
 		$("#updateTeamID").val($('#teamID').val());
+		//hide,  disable everything except team picker:
+		$("#achList").addClass('hide');
+		$("#achList :input").prop("disabled", true);
 	}
-	else { // all good, hide.
+	else { // all good, hide warning
 		$("#warning").removeClass('show');
+		//show list, enable input:
+		$("#achList").removeClass('hide');
+		$("#achList :input").prop("disabled", false);
 	}
 }
 

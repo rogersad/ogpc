@@ -24,6 +24,7 @@
  --->
 <div id="warning" class="error hide">
 	WARNING! This team has already been scored for this category.<br /><br />
+	Select another team, or click 'Update Scores'<br /><br />
 	<div class="form-group">
 	<form id='frmCallUpdate' action="#BuildURL('main.updatescore')#" method="post" autocomplete="off">
 	<input type="hidden" name="updateTeamID" id="updateTeamID" value="" />
@@ -102,19 +103,19 @@
 
 	</cfif>
 
+		<div class="form-group" id='commentdiv'>
+		<textarea class="form-control" name="comments" id="comments" placeholder="comments"></textarea>
+		</div>
+
+		<br />
+		<button type="button" class="btn btn-default" id="btnSubmit">Submit Scores</button>
+		<button type="reset" class="btn btn-default" id="btnReset" onClick="highlight(0);" >Reset</button>
+
 	</div>
 
-	<div class="form-group" id='commentdiv'>
-	<textarea class="form-control" name="comments" id="comments" placeholder="comments"></textarea>
-	</div>
-	<br />
-	<button type="button" class="btn btn-default" id="btnSubmit">Submit Scores</button>
-	<button type="reset" class="btn btn-default" id="btnReset" onClick="highlight(0);" >Reset</button>
+	</form>
 
-	<br /><br />
-</form>
-
-</cfoutput>
+	</cfoutput>
 
 
 
