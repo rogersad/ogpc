@@ -17,4 +17,13 @@
 	</form>
 	<!--- <cfdump var="#rc#"> --->
 
+	<div style="margin:10px; padding:6px; border:2px solid blue; width:20%;">
+
+		<form action="#buildURL('main.loadSchoolsAndTeams')#" method="post"> <!---  onSubmit="return false" --->
+		<div class="form-group">
+		<input type="submit" name="submit" value="Load Schools and Teams to DB">
+		</div>
+		</form>
+
+	</div>
 </cfoutput>
