@@ -137,22 +137,14 @@
 	<!--- *** getTeamAchievements(TeamID,CategoryID) --->
 	<cffunction name="getTeamAchievements">
 		<cfargument name="teamId" required="true">
-		<cfargument name="catId" required="true">
 
-		<cfquery name="get_scores" datasource="#application.dsn#">
-		SELECT ACH.ID,ACH.POINT_VALUE,ACH.CATEGORY_ID, ACH.DESCR
-		      ,IF( (SELECT TA.OGPC_ACHIEVEMENT_ID
-		            FROM OGPC_TEAM_ACHIEVEMENTS TA
-		            WHERE TA.OGPC_ACHIEVEMENT_ID = ACH.ID
-		              AND TA.OGPC_TEAM_ID = #arguments.teamId#
-		            ) IS NOT NULL, 'X','')
-		       EARNED_ACHIEVEMENT
-		FROM OGPC_ACHIEVEMENTS ACH
-		WHERE ACH.CATEGORY_ID = #arguments.catId#
-		ORDER BY ACH.ID ASC
+		<cfquery name="get_team_ach" datasource="#application.dsn#">
+		SELECT TA.OGPC_ACHIEVEMENT_ID
+		  FROM OGPC_TEAM_ACHIEVEMENTS TA
+		 WHERE TA.OGPC_TEAM_ID = #arguments.teamId#
 		</cfquery>
 
-		<cfreturn get_scores>
+		<cfreturn get_team_ach>
 	</cffunction>
 
 

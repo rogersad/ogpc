@@ -10,26 +10,22 @@
 	<input type="hidden" name="categoryID" value="#rc.updateCatID#">
 
 	<div class="form-group achievements" id='achList'>
-	<!--- loaded via ajax on select change, else... --->
-	<cfif structKeyExists(rc, 'teamAchievements')>
-		<cfloop query="rc.teamAchievements">
-
-			<cfif rc.teamAchievements.Earned_Achievement EQ 'X'>
-				<cfset isChecked = 'checked'>
+		<cfloop query="rc.getAchievements">
+			<cfif listFind(rc.teamAchievementsList,rc.getAchievements.id)>
 				<cfset highlightClass = 'checkSelected'>
+				<cfset isChecked = 'checked'>
 			<cfelse>
-				<cfset isChecked = ''>
 				<cfset highlightClass = ''>
+				<cfset isChecked = ''>
 			</cfif>
-			<div class="checkbox scoring #highlightClass#" id="d#rc.teamAchievements.ID#">
-				<label>
-				<input type="checkbox" class="cbox" id="c#rc.teamAchievements.ID#" #isChecked#
-					onClick="highlight(#rc.teamAchievements.ID#)" name="score" value="#rc.teamAchievements.ID#">
-					#rc.teamAchievements.DESCR#
-				</label>
-			</div>
+			<div class="checkbox scoring #highlightClass#" id="d#rc.getAchievements.ID#">
+			<label>
+			<input type="checkbox" class="cbox" id="c#rc.getAchievements.ID#" #isChecked#
+				onClick="highlight(#rc.getAchievements.ID#)" name="score" value="#rc.getAchievements.ID#">
+				#rc.getAchievements.DESCR#
+			</label>
+		</div>
 		</cfloop>
-	</cfif>
 	</div>
 
 	<div class="form-group" id='commentdiv'>

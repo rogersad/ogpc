@@ -146,10 +146,14 @@
 	<cffunction name="updatescore">
 		<cfargument name="rc" required="true">
 
+		<cfset var teamAchievements = variables.ogpcService.getTeamAchievements(rc.updateTeamID,rc.updateCatID)>
+		<cfset rc.teamAchievementsList = ValueList(teamAchievements.OGPC_ACHIEVEMENT_ID)>
+
+		<cfset rc.getAchievements = variables.ogpcService.getAchievements(rc.updateCatID)>
 		<cfset rc.categories = variables.ogpcService.getCategories(rc.updateCatID)>
 		<cfset rc.teams = variables.ogpcService.getTeams(rc.updateTeamID)>
 		<cfset rc.teamComments = variables.ogpcService.getComments(rc.updateTeamID,rc.updateCatID)>
-		<cfset rc.teamAchievements = variables.ogpcService.getTeamAchievements(rc.updateTeamID,rc.updateCatID)>
+
 	</cffunction>
 
 
@@ -157,15 +161,13 @@
 	<cffunction name="processupdatescore">
 		<cfargument name="rc" required="true">
 
-		<!--- get achievements list --->
-		<cfset rc.teamAchievements = variables.ogpcService.getTeamAchievements(rc.teamId,rc.categoryID)>
-
-		<cfloop query="rc.teamAchievements">
-			<cfif rc.teamAchievements.Earned_Achievement EQ 'X'>
-				<cfset result = variables.ogpcService.deleteAchievements(rc.teamId,rc.teamAchievements.ID)>
-			</cfif>
+		<!--- delete existing Achievements for this category: --->
+		<cfset var teamAchievements = variables.ogpcService.getTeamAchievements(rc.teamID,rc.categoryID)>
+		<cfloop query="teamAchievements">
+			<cfset result = variables.ogpcService.deleteAchievements(rc.teamId,teamAchievements.OGPC_ACHIEVEMENT_ID)>
 		</cfloop>
-		<!--- re-route to submit score: --->
+
+		<!--- re-route updated scores to submit score: --->
 		<cfset variables.fw.redirect(action='main.submitscore',preserve='all')>
 	</cffunction>
 
