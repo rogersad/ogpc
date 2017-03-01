@@ -24,6 +24,7 @@
 	<!--- *** default(rc) --->
 	<cffunction name="default" access="public">
 		<cfargument name="rc" required="true">
+
 		<!--- home page. --->
 		<cfif structKeyExists(client,'judgename') AND Len(client.judgename)>
 			<cfset rc.displayName = client.judgename>
@@ -31,7 +32,7 @@
 			<cfset rc.displayName = ''>
 		</cfif>
 
-		 <!--- <cfset rc.displayName = client.judgename> --->
+		 <cfset rc.displayName = client.judgename>
 	</cffunction>
 
 
