@@ -15,15 +15,31 @@
 	<input type="submit" name="submit" value="Get Scores">
 	</div>
 	</form>
-	<!--- <cfdump var="#rc#"> --->
+
+
+	<!--- *** load schools, teams:
 
 	<div style="margin:10px; padding:6px; border:2px solid blue; width:20%;">
 
-		<form action="#buildURL('main.loadSchoolsAndTeams')#" method="post"> <!---  onSubmit="return false" --->
+		<form action="#buildURL('main.loadSchools')#" method="post"> <!---  onSubmit="return false" --->
 		<div class="form-group">
-		<input type="submit" name="submit" value="Load Schools and Teams to DB">
+		Password:<input type="password" name="password" value="">
+		<input type="submit" name="submit" value="Load Schools">
 		</div>
 		</form>
 
 	</div>
+	<div style="margin:10px; padding:6px; border:2px solid blue; width:20%;">
+		(load schools first, please)
+		<form action="#buildURL('main.loadTeams')#" method="post"> <!---  onSubmit="return false" --->
+		<div class="form-group">
+		Password:<input type="password" name="password" value="">
+		<input type="submit" name="submit" value="Load Teams">
+		</div>
+		</form>
+
+	</div>
+--->
+
+
 </cfoutput>

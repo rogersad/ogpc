@@ -2,7 +2,6 @@
 
 	<!--- *** BonusCalc(count) --->
 	<!--- first Challenge is worth 4 points. The second is worth 3, then 2, then 1, then 1. --->
-
 	<cffunction name="BonusCalc" access="public" returntype="numeric">
 		<cfargument name="calc_value" required="Yes" type="numeric">
 		<cfset rValue = 0>
@@ -26,8 +25,27 @@
 		<cfreturn rValue>
 	</cffunction>
 
-	<!--- *** getCategores() returns full category list --->
 
+	<!--- *** getAchievements() reinstated for preload if client.categoryID exists: --->
+	<cffunction name="getAchievements">
+		<cfargument name="catID" required="true">
+		<cfargument name="eventYear" default="#application.eventYear#">
+
+		<cfquery name="get_achievements" datasource="#application.dsn#" cachedwithin="#CreateTimeSpan(0,1,0,0)#"><!---  --->
+		SELECT ID,CATEGORY_ID,CHALLENGE_FLAG,DESCR
+			,DISPLAY_ORDER_NUM,POINT_VALUE,HAS_CHILD_FLAG,PARENT_ID
+		FROM OGPC_ACHIEVEMENTS
+		WHERE EVENT_YEAR = '#arguments.eventYear#'
+		  AND VALID_FLAG = 'Y'
+		  AND CATEGORY_ID = #arguments.catID#
+		ORDER BY CATEGORY_ID, DISPLAY_ORDER_NUM
+		</cfquery>
+
+		<cfreturn get_achievements>
+	</cffunction>
+
+
+	<!--- *** getCategores() returns full category list --->
 	<cffunction name="getCategories" returntype="query">
 		<cfquery name="get_categories" datasource="#application.dsn#" cachedwithin="#CreateTimeSpan(0,1,0,0)#">
 		SELECT ID, DESCR
@@ -37,8 +55,8 @@
 		<cfreturn get_categories>
 	</cffunction>
 
-	<!--- *** getComments(TeamID,CategoryID) returns any judge comments --->
 
+	<!--- *** getComments(TeamID,CategoryID) returns any judge comments --->
 	<cffunction name="getComments" returntype="query">
 		<cfargument name="teamId" required="true">
 		<cfargument name="catId" required="true">
@@ -51,8 +69,8 @@
 		<cfreturn get_comments>
 	</cffunction>
 
-	<!--- *** getTeamAchievements(TeamID,CategoryID) --->
 
+	<!--- *** getTeamAchievements(TeamID,CategoryID) --->
 	<cffunction name="getTeamAchievements">
 		<cfargument name="teamId" required="true">
 		<cfargument name="catId" required="true">
@@ -71,8 +89,8 @@
 		<cfreturn get_scores>
 	</cffunction>
 
-	<!--- *** getTeams([teamId][,eventYear]) no params: full list --->
 
+	<!--- *** getTeams([teamId][,eventYear]) no params: full list --->
 	<cffunction name="getTeams">
 		<cfargument name="teamId" default="0">
 		<cfargument name="eventYear" default="#application.eventYear#">
@@ -90,7 +108,6 @@
 	</cffunction>
 
 	<!--- *** getReport()  --->
-
 	<cffunction name="getReport">
 		<cfquery name="get_report" datasource="#application.dsn#">
 		SELECT T.ID TEAM_ID, T.NAME, T.M_H_CODE
@@ -111,12 +128,14 @@
 		<cfreturn get_report>
 	</cffunction>
 
-	<!--- getTMSRecord() calls TMS api --->
 
+	<!--- getTMSRecord(url) calls TMS api. returns array of structs --->
 	<cffunction name="getTMSRecord">
-		<!--- http://tms.ogpc.info/api/Entries/season/year/2017 --->
+		<cfargument name="theURL" required="true">
+
 		<cfset var jsonRecord = ''>
-		<cfhttp url="http://tms.ogpc.info/api/Entries/season/year/2017"
+
+		<cfhttp url="#arguments.theURL#"
 			method="get"
 			result="tmsJSON" />
 		<!--- Convert JSON to array of structs --->
@@ -124,8 +143,8 @@
 		<cfreturn jsonRecord>
 	</cffunction>
 
-	<!--- loadSchools(RawJSON) loads JSON from TMS into School Table --->
 
+	<!--- insertSchools(id,name) inserts a TMS record to school table --->
 	<cffunction name="insertSchools">
 		<cfargument name='tmsId' required="true">
 		<cfargument name='tmsName' required="true">
@@ -137,19 +156,45 @@
 
 	</cffunction>
 
-	<!--- loadTeams(RawJSON) loads JSON from TMS into Team Table --->
 
+	<!--- insertTeams(name,tmsId,schoolId,membersNum) loads JSON from TMS into Team Table --->
 	<cffunction name="insertTeams">
-		<cfargument name='tmsId' required="true">
-		<cfargument name='tmsName' required="true">
-		<!--- Need to get this: --->
-		<!--- teams: schoolID (FK), TeamID, TeamName, TeamMemberCount --->
+		<cfargument name='teamName' required="true">
+		<cfargument name='teamTmsId' required="true">
+		<cfargument name='schoolId' required="true">  <!--- THIS SYSTEM ID --->
+		<cfargument name='membersNum' required="true">
+		<cfargument name='divCode' required="true">
+
+		<cfset var mhcode = 'H'>
+		<cfif arguments.divCode EQ 2>
+			<cfset mhcode = 'M'>
+		</cfif>
 
 		<cfquery name="insert_school" datasource="#application.dsn#">
-			INSERT INTO OGPC_TEAMS (NAME,TMS_ID,OGPC_SCHOOL_ID,M_H_CODE,MEMBERS_NUM,EVENT_YEAR)
-			VALUES ('#arguments.tmsName#','#arguments.tmsId#')
+			INSERT INTO OGPC_TEAMS
+				(NAME, TMS_ID, OGPC_SCHOOL_ID, M_H_CODE, MEMBERS_NUM, EVENT_YEAR)
+			VALUES ('#arguments.teamName#','#arguments.teamTmsId#'
+					,'#arguments.schoolId#','#mhcode#'
+					,#arguments.membersNum#,'#application.eventYear#')
 		</cfquery>
 	</cffunction>
 
 
+	<!--- getSchoolFromTMSId(tmsId) returns record ID --->
+	<cffunction name="getSchoolFromTMSId">
+		<cfargument name='schoolTmsId' required="true">
+
+		<cfquery name='get_team_by_tms_id' datasource="#application.dsn#">
+		SELECT ID
+		  FROM OGPC_SCHOOLS
+		 WHERE TMS_ID = '#arguments.schoolTmsId#'
+		</cfquery>
+
+		<cfreturn get_team_by_tms_id>
+
+	</cffunction>
+
 </cfcomponent>
+
+
+

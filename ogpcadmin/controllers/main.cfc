@@ -95,23 +95,60 @@
 			<cfset rc.teamResult[curTeam].totalScore = rc.teamResult[curTeam].points + variables.ogpcService.BonusCalc( rc.teamResult[curTeam].zeroCount)>
 		</cfloop>
 
-	</cffunction>
-
-
-	<!--- loadSchoolsAndTeams(RawJSON) loads JSON dump from TMS --->
-	<cffunction name="loadSchoolsAndTeams">
-		<!--- loadSchools and loadTeams use same JSON record. --->
-		<cfset var jsonResult = variables.ogpcService.getTMSRecord()>
-		<cfdump var="#jsonResult#">
-
-		<cfloop from="1" to="#ArrayLen(jsonResult)#" index="currentIndex">
-			<cfset variables.ogpcService.insertSchools(jsonResult[currentIndex].schoolID,jsonResult[currentIndex].schoolName)>
+		<cfloop  from="1" to="#Len(rc.categories)#" index="currentCat">
+			<cfset rc.achievements[currentCat] = variables.ogpcService.getAchievements(rc.categories.ID[currentCat])>
 		</cfloop>
-
-		<cfset variables.ogpcService.insertTeams(jsonResult)>
-
 	</cffunction>
 
+
+	<!--- loadSchools(RawJSON) loads JSON dump from TMS --->
+	<cffunction name="loadSchools">
+		<cfargument name="rc" required="true">
+
+		<cfset var schoolURL = "http://tms.ogpc.info/api/schools">
+		<cfset var jsonResult = variables.ogpcService.getTMSRecord(schoolURL)>
+
+		<cfset var argList = structNew()>
+
+		<!--- <cfdump var="#jsonResult#"> --->
+		<cfif rc.password EQ 'Omicr0n'>
+			<cfloop from="1" to="#ArrayLen(jsonResult)#" index="currentIndex">
+				<cfset variables.ogpcService.insertSchools(jsonResult[currentIndex].ID,jsonResult[currentIndex].Name)>
+			</cfloop>
+		</cfif>
+		<cfset variables.fw.redirect('main.default')>
+	</cffunction>
+
+
+	<!--- loadTeams(RawJSON) loads JSON dump from TMS --->
+	<cffunction name="loadTeams">
+		<cfargument name="rc" required="true">
+		<cfset var teamURL="http://tms.ogpc.info/api/Entries/season/year/2017">
+		<cfset var jsonResult = variables.ogpcService.getTMSRecord(teamURL)>
+		<cfset var argList = structNew()>
+
+		<cfdump var="#jsonResult#">
+		<cfif rc.password EQ 'Omicr0n'>
+			<cfloop from="1" to="#ArrayLen(jsonResult)#" index="currentIndex">
+			<!---
+			<cfargument name='teamName' required="true">
+			<cfargument name='teamTmsId' required="true">
+			<cfargument name='schoolId' required="true">
+			<cfargument name='membersNum' required="true">
+			 --->
+			 	<cfset argList.schoolId = variables.ogpcService.getSchoolFromTMSId(jsonResult[currentIndex].schoolId)>
+				<cfset argList.teamTmsId = jsonResult[currentIndex].teamId>
+				<cfset argList.teamName = jsonResult[currentIndex].teamName>
+				<cfset argList.membersNum = jsonResult[currentIndex].teamMemberCount>
+				<cfset argList.divcode = jsonResult[currentIndex].TeamDivisionId>
+				<cfset variables.ogpcService.insertTeams(argList.teamName,argList.teamTmsId,argList.schoolId.ID,argList.membersNum,argList.divcode)>
+			</cfloop>
+
+		</cfif>
+
+		<cfset variables.fw.redirect('main.default')>
+
+	</cffunction>
 </cfcomponent>
 
 
