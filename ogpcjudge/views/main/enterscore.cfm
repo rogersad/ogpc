@@ -84,6 +84,12 @@
 							<br />
 						</label>
 					<cfelse>
+						<label>
+						<input type="radio" class="cbox" id="none#rc.achievements.ID[radioRow]#" checked
+							name="score#currentParent#" value="none" onClick="$('##d#currentParent#').removeClass('checkSelected');" >
+							None of the above
+							<br />
+						</label>
 						<cfset currentParent = -1>  <!--- reset parent id --->
 						<cfset achIndex = radioRow> <!--- reset outerloop --->
 						<cfbreak>					<!--- break --->
