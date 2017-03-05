@@ -68,7 +68,7 @@
 				<!--- do this one, then loop children --->
 				<label>
 				<input type="radio" class="cbox" id="c#rc.achievements.ID[achIndex]#"
-					onClick="highlight(#rc.achievements.ID[achIndex]#)" name="score#currentParent#" value="#rc.achievements.ID[achIndex]#">
+					onClick="$('##d#currentParent#').addClass('checkSelected');" name="score#currentParent#" value="#rc.achievements.ID[achIndex]#">
 					#rc.achievements.DESCR[achIndex]#
 					<br />
 				</label>
@@ -79,7 +79,7 @@
 					<cfif rc.achievements.PARENT_ID[radioRow] EQ currentParent>
 						<label>
 						<input type="radio" class="cbox" id="c#rc.achievements.ID[radioRow]#"
-							onClick="highlight(#rc.achievements.ID[radioRow]#)" name="score#currentParent#" value="#rc.achievements.ID[radioRow]#">
+							onClick="$('##d#currentParent#').addClass('checkSelected');" name="score#currentParent#" value="#rc.achievements.ID[radioRow]#">
 							#rc.achievements.DESCR[radioRow]#
 							<br />
 						</label>
@@ -101,7 +101,7 @@
 			<div class="checkbox scoring" id="d#rc.achievements.ID[achIndex]#">
 			<label>
 			<input type="checkbox" class="cbox" id="c#rc.achievements.ID[achIndex]#"
-				onClick="highlight(#rc.achievements.ID[achIndex]#)" name="score" value="#rc.achievements.ID[achIndex]#">
+				onClick="$('##d#rc.achievements.ID[achIndex]#').addClass('checkSelected');" name="score" value="#rc.achievements.ID[achIndex]#">
 				#rc.achievements.DESCR[achIndex]#
 			</label>
 			</div>
