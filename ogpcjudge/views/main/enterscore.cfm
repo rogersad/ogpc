@@ -86,7 +86,7 @@
 					<cfelse>
 						<label>
 						<input type="radio" class="cbox" id="none#rc.achievements.ID[radioRow]#" checked
-							name="score#currentParent#" value="none" onClick="$('##d#currentParent#').removeClass('checkSelected');" >
+							name="score#currentParent#" value="0" onClick="$('##d#currentParent#').removeClass('checkSelected');" >
 							None of the above
 							<br />
 						</label>
