@@ -1,6 +1,8 @@
 <cfset rc.pageTitle = 'Update Achievements'>
-<cfset rc.jslist = '<script src="includes/enterscore.js"></script>'>
-<cfset achIndex = 0> <!--- for sub-looping --->
+<!--- <cfset rc.jslist = '<script src="includes/enterscore.js"></script>'> --->
+<cfset achIndex = 1> <!--- for sub-looping --->
+
+<cfdump var="#rc.teamAchievementsList#">
 
 <cfoutput>
 	<h2>UPDATE Achievements </h2>
@@ -12,108 +14,71 @@
 
 	<div class="form-group achievements" id='achList'>
 		<cfloop from="1" to="#rc.achievements.RECORDCOUNT#" index="queryRow">
-			<!--- must use achIndex and not queryRow. queryRow can't be updated --->
-			<!--- achIndex stars off = queryRow, but will get updated --->
-			<cfset achIndex++>
+
+			<!--- use achIndex because queryRow cant be changed --->
 			<cfif achIndex GT rc.achievements.RECORDCOUNT>
 				<cfbreak>
 			</cfif>
 
-			<!--- highlight, is checkd: --->
-			<cfif listFind(rc.teamAchievementsList,rc.achievements.id[queryRow])>
-				<cfset highlightClass = 'checkSelected'>
-				<cfset isChecked = 'checked'>
-<!--- FOUND #rc.achievements.id[queryRow]#; --->
-			<cfelse>
-				<cfset highlightClass = ''>
-				<cfset isChecked = ''>
-<!--- **NOT #rc.achievements.id[queryRow]#; --->
-			</cfif>
-
-rc.achievements.HAS_CHILD_FLAG[queryRow]:#rc.achievements.HAS_CHILD_FLAG[queryRow]#
-			<!--- test for radio set --->
-			<cfif rc.achievements.HAS_CHILD_FLAG[queryRow] EQ 'Y'>
-				<cfset currentParent = rc.achievements.ID[queryRow]>
+			<!--- radio set start --->
+			<cfif rc.achievements.HAS_CHILD_FLAG[achIndex] EQ 'Y'>
+				<cfset currentParent = rc.achievements.ID[achIndex]>
 
 				<div class="checkbox scoring" id="d#currentParent#">
-				<!--- remove all of these: --->
+					<!--- 10 is arbitrary, larger than any subgroup --->
+					<cfset checkedCount = 0>
+					<cfloop from="1" to="10" index="radioRow">
+						<cfif rc.achievements.PARENT_ID[achIndex] EQ currentParent>
 
-				<!--- do this one, then loop children
-				<label>
-				<input type="radio" class="cbox" id="c#rc.achievements.ID[achIndex]#"
-					onClick="highlight(#currentParent#)" name="score#currentParent#" value="#rc.achievements.ID[achIndex]#">
-					#rc.achievements.DESCR[achIndex]#
-					<br />
-				</label>
- --->
-				<!--- Assumes children will follow parents (DISPLAY_ORDER_NUM) --->
-				<!--- when done, this loop must BREAK and set outer loop index to next row
-				<cfloop  from="#achIndex+1#" to="#rc.achievements.RECORDCOUNT#" index="radioRow">
-achID:#rc.achievements.id[achIndex]# achIndex: #achIndex#; highlightClass: #highlightClass#; isChecked: #isChecked#; radioRow: #radioRow#;
-					<cfif rc.achievements.PARENT_ID[radioRow] EQ currentParent>
-						<label>
-						<input type="radio" class="cbox" id="c#rc.achievements.ID[radioRow]#" #isChecked#
-							onClick="highlight(#currentParent#)" name="score#currentParent#" value="#rc.achievements.ID[radioRow]#">
-							#rc.achievements.DESCR[radioRow]#
-							<br />
-						</label>
-					<cfelse>
-						<cfset currentParent = -1>  <!--- reset parent id --->
-						<cfset achIndex = radioRow+1> <!--- reset outerloop --->
-						<cfbreak>					<!--- break --->
-					</cfif>
-				</cfloop>
-				</div>                      <!--- close radio div --->
-			 --->
+							<!--- was this one checked? --->
+							<cfif listFind(rc.teamAchievementsList,rc.achievements.ID[achIndex])>
+								<cfset isChecked = 'checked'>
+								<cfset checkedCount++>
+							<cfelse>
+								<cfset isChecked = ''>
+							</cfif>
 
-				 <!--- 10 is arbitray, bigger than any sub-radio list. will break out when done --->
-				<cfloop from="#queryRow#" to="#queryRow+10#" index="radioRow">
+							<label>
+							<input type="radio" class="cbox" id="c#rc.achievements.ID[achIndex]#" #isChecked#
+								onClick="highlight(#currentParent#)" name="score#currentParent#" value="#rc.achievements.ID[achIndex]#">
+								#rc.achievements.DESCR[achIndex]#
+								<br />
+							</label>
+							<!--- increment ach: --->
+							<cfset achIndex++>
+						<cfelse>
+							<!--- show 'None' for un-checking radios --->
+							<cfif checkedCount EQ 0>
+								<cfset checkNone = 'checked'>
+							<cfelse>
+								<cfset checkNone = ''>
+							</cfif>
+							<label>
+							<input type="radio" class="cbox" id="none#rc.achievements.ID[achIndex]#" #checkNone#
+								onClick="$('##d#currentParent#').removeClass('checkSelected');"
+								name="score#currentParent#" value="none">
+								None of the above
+							</label>
 
-					<cfif rc.achievements.PARENT_ID[achIndex] NEQ currentParent>
-has child in loop radio neq parent radioRow: #radioRow#, currentParent: #currentParent# achIndex:#achIndex#
-rc.achievements.PARENT_ID[queryRow]:#rc.achievements.PARENT_ID[queryRow]#
-<cfabort>
-						<cfbreak>
-					</cfif>
+							<cfset achIndex--> <!--- reset ach for outside loop --->
+							<cfbreak>  <!--- break radioRow loop: --->
 
-					<cfif listFind(rc.teamAchievementsList,rc.achievements.id[radioRow])>
-						<cfset setHighlight = true>
-						<cfset isChecked = 'checked'>
-					<cfelse>
-						<cfset isChecked = ''>
-					</cfif>
-					<label>
-					<input type="radio" class="cbox" id="c#rc.achievements.ID[radioRow]#" #isChecked#
-						onClick="highlight(#currentParent#)" name="score#currentParent#" value="#rc.achievements.ID[radioRow]#">
-						#rc.achievements.DESCR[radioRow]#
-						<br />
-					</label>
-					<cfset achIndex++> <!--- keep this in sync with outer loop --->
-				</cfloop>
+						</cfif>
+					</cfloop>
 
-				<label>
-				<input type="radio" class="cbox" id="none"
-					onClick="$('##d#currentParent#').removeClass('checkSelected');" name="score#currentParent#" value="0">
-					None of the items above
-					<br />
-				</label>
-				<cfif setHighlight>
-					<script>highlight(#currentParent#);</script>
-				</cfif>
 				</div>
 
-
-			<!--- Need to reset hightlight loop after radios.
-			<cfif listFind(rc.teamAchievementsList,rc.achievements.id[achIndex])>
-				<cfset highlightClass = 'checkSelected'>
-				<cfset isChecked = 'checked'>
-				<!--- FOUND #rc.achievements.id[achIndex]#; --->
+			<!--- regular checkox: --->
 			<cfelse>
-				<cfset highlightClass = ''>
-				<cfset isChecked = ''>
-			</cfif>
- --->
-			<cfelse> <!--- not radio set --->
+				<!--- was this one checked? --->
+				<cfif listFind(rc.teamAchievementsList,rc.achievements.ID[achIndex])>
+					<cfset highlightClass = 'checkSelected'>
+					<cfset isChecked = 'checked'>
+				<cfelse>
+					<cfset highlightClass = ''>
+					<cfset isChecked = ''>
+				</cfif>
+
 				<div class="checkbox scoring #highlightClass#" id="d#rc.achievements.ID[achIndex]#">
 				<label>
 				<input type="checkbox" class="cbox" id="c#rc.achievements.ID[achIndex]#" #isChecked#
@@ -123,25 +88,9 @@ rc.achievements.PARENT_ID[queryRow]:#rc.achievements.PARENT_ID[queryRow]#
 				</div>
 			</cfif>
 
+			<cfset achIndex++>
+
 		</cfloop>
-		<!---
-		<cfloop query="rc.getAchievements">
-			<cfif listFind(rc.teamAchievementsList,rc.getAchievements.id)>
-				<cfset highlightClass = 'checkSelected'>
-				<cfset isChecked = 'checked'>
-			<cfelse>
-				<cfset highlightClass = ''>
-				<cfset isChecked = ''>
-			</cfif>
-			<div class="checkbox scoring #highlightClass#" id="d#rc.getAchievements.ID#">
-			<label>
-			<input type="checkbox" class="cbox" id="c#rc.getAchievements.ID#" #isChecked#
-				onClick="highlight(#rc.getAchievements.ID#)" name="score" value="#rc.getAchievements.ID#">
-				#rc.getAchievements.DESCR#
-			</label>
-		</div>
-		</cfloop>
-		 --->
 	</div>
 
 	<div class="form-group" id='commentdiv'>
@@ -151,10 +100,15 @@ rc.achievements.PARENT_ID[queryRow]:#rc.achievements.PARENT_ID[queryRow]#
 	<button type="button" class="btn btn-default" id="btnSubmit">Submit Scores</button>
 	<br /><br />
 </form>
-<cfdump var="#rc#">
 
 </cfoutput>
-
+<script>
+function highlight(checkId){
+	//checkboxes cant be styled. highlight the wrapper div:
+	var dNum = "d" + checkId; //changed to send id only, div id = d+ID
+	$("#"+dNum).addClass('checkSelected');
+	}
+</script>
 
 
 
