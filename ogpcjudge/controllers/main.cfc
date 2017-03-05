@@ -101,17 +101,30 @@
 
 		<cfset var result.returnCode = 0>
 		<cfset var tempVar = ''>
+		<cfset var logText = ''>
+
+		<cfif structKeyExists(rc,'updatedScore')>
+			<cfset logText &= 'UPDATED SCORE;'>
+		</cfif>
+
+		<cfif structKeyExists(client,'JUDGENAME') and structKeyExists(client,'CATEGORYID')>
+			<cfset logText &= '#client.judgename#; Team:#rc.teamId#; Cat:#client.categoryId#;'>
+		</cfif>
 
 		<!--- save checkbox scores --->
-		<cfloop list="#rc.score#" index="listDex"><!---  --->
-			<cfset result = variables.ogpcService.saveScore(rc.teamID,listDex)>
-			<cfif result.returnCode>
-				<cfset rc.errorMessage = 'There was an error. Please re-enter the score.'>
-				<cfset rc.errorMessage &= '<br />DO NOT USE THE BACK BUTTON.<br /> Please use the link below.'>
-				 <cfset variables.fw.setview("main.error")>
-				 <cfbreak>
-			</cfif>
-		</cfloop>
+		<cfif ListLen(rc.score) GTE 1>
+			<cfset logText &= ' score:#rc.score#;'>
+
+			<cfloop list="#rc.score#" index="listDex"><!---  --->
+				<cfset result = variables.ogpcService.saveScore(rc.teamID,listDex)>
+				<cfif result.returnCode>
+					<cfset rc.errorMessage = 'There was an error. Please re-enter the score.'>
+					<cfset rc.errorMessage &= '<br />DO NOT USE THE BACK BUTTON.<br /> Please use the link below.'>
+					 <cfset variables.fw.setview("main.error")>
+					 <cfbreak>
+				</cfif>
+			</cfloop>
+		</cfif>
 
 		<!--- save radio scores. a bit different. need to create dynamic var and then evaluate it  --->
 		<cfloop collection="#rc#" item="currentValue">
@@ -120,6 +133,8 @@
 
 				<cfset tempVar = rc[currentValue]>
 				<cfset result = variables.ogpcService.saveScore(rc.teamID,'#tempVar#')> <!--- de-reference tempVar --->
+
+				<cfset logText &= ' radio: #tempVar#;'>
 
 				<cfif result.returnCode>
 					<cfset rc.errorMessage = 'There was an error. Please re-enter the score.'>
@@ -140,6 +155,8 @@
 		<!--- get team name for nice output on confirmation page: --->
 		<cfset rc.team = variables.ogpcService.getTeams(rc.teamID)>
 
+		<!--- save log: --->
+		<cfset variables.ogpcService.loggit(logText)>
 	</cffunction>
 
 
@@ -150,7 +167,7 @@
 		<cfset var teamAchievements = variables.ogpcService.getTeamAchievements(rc.updateTeamID,rc.updateCatID)>
 		<cfset rc.teamAchievementsList = ValueList(teamAchievements.OGPC_ACHIEVEMENT_ID)>
 
-		<cfset rc.getAchievements = variables.ogpcService.getAchievements(rc.updateCatID)>
+		<cfset rc.achievements = variables.ogpcService.getAchievements(rc.updateCatID)>
 		<cfset rc.categories = variables.ogpcService.getCategories(rc.updateCatID)>
 		<cfset rc.teams = variables.ogpcService.getTeams(rc.updateTeamID)>
 		<cfset rc.teamComments = variables.ogpcService.getComments(rc.updateTeamID,rc.updateCatID)>
@@ -164,11 +181,19 @@
 
 		<!--- delete existing Achievements for this category: --->
 		<cfset var teamAchievements = variables.ogpcService.getTeamAchievements(rc.teamID,rc.categoryID)>
+<!--- <cfdump var="#teamAchievements#"> --->
 		<cfloop query="teamAchievements">
 			<cfset result = variables.ogpcService.deleteAchievements(rc.teamId,teamAchievements.OGPC_ACHIEVEMENT_ID)>
 		</cfloop>
 
+<!---
+<cfset teamAchievements = variables.ogpcService.getTeamAchievements(rc.teamID,rc.categoryID)>
+<cfdump var="#teamAchievements#">
+<cfdump var="#rc#">
+<cfabort>
+ --->
 		<!--- re-route updated scores to submit score: --->
+		<cfset rc.updatedScore = true>
 		<cfset variables.fw.redirect(action='main.submitscore',preserve='all')>
 	</cffunction>
 
