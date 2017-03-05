@@ -2,7 +2,7 @@
 <!--- <cfset rc.jslist = '<script src="includes/enterscore.js"></script>'> --->
 <cfset achIndex = 1> <!--- for sub-looping --->
 
-<cfdump var="#rc.teamAchievementsList#">
+<!--- <cfdump var="#rc.teamAchievementsList#"> --->
 
 <cfoutput>
 	<h2>UPDATE Achievements </h2>
@@ -98,8 +98,11 @@
 	</div>
 	<br />
 	<button type="button" class="btn btn-default" id="btnSubmit">Submit Scores</button>
+	&nbsp;&nbsp;
+	<a class="btn btn-default" href="#BuildURL('main.enterscore')#">Return to Enter Score</a>
 	<br /><br />
 </form>
+
 
 </cfoutput>
 <script>
