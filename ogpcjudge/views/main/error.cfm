@@ -4,7 +4,7 @@
 <cfoutput>
 	<h2>#rc.pageTitle#!</h2>
 
-	<cfdump var="#rc#">
+	<!--- <cfdump var="#rc#"> --->
 
 	<cfif structKeyExists(rc,'errorMessage') AND Len(rc.errorMessage)>
 		<div class="error">

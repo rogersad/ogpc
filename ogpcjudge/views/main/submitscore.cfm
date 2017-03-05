@@ -4,6 +4,6 @@
 	successfully posted.
 	</h3>
 
-	<h3><a href="#BuildURL('main.enterscore')#">Score next team</a></h3>
+	<h3><a href="#BuildURL('main.enterscore')#">Score another team</a></h3>
 
 </cfoutput>
