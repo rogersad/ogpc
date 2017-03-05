@@ -101,7 +101,7 @@
 			<div class="checkbox scoring" id="d#rc.achievements.ID[achIndex]#">
 			<label>
 			<input type="checkbox" class="cbox" id="c#rc.achievements.ID[achIndex]#"
-				onClick="$('##d#rc.achievements.ID[achIndex]#').addClass('checkSelected');" name="score" value="#rc.achievements.ID[achIndex]#">
+				onClick="highlight(#rc.achievements.ID[achIndex]#);" name="score" value="#rc.achievements.ID[achIndex]#">
 				#rc.achievements.DESCR[achIndex]#
 			</label>
 			</div>
