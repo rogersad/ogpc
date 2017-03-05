@@ -9,7 +9,7 @@
 	<h3>Team ###rc.updateTeamID# , #rc.teams.school_name# : #rc.teams.name#</h3>
 	<h3>Category: #rc.categories.DESCR#</h3>
 	<form id='frmAchievements' action="#BuildURL('main.processupdatescore')#" method="post" autocomplete="off">
-	<input type="hidden" name="teamId" value="#rc.updateTeamID#">
+	<input type="hidden" name="teamId" id='teamId' value="#rc.updateTeamID#">
 	<input type="hidden" name="categoryID" value="#rc.updateCatID#">
 
 	<div class="form-group achievements" id='achList'>
@@ -56,7 +56,7 @@
 							<label>
 							<input type="radio" class="cbox" id="none#rc.achievements.ID[achIndex]#" #checkNone#
 								onClick="$('##d#currentParent#').removeClass('checkSelected');"
-								name="score#currentParent#" value="none">
+								name="score#currentParent#" value="0">
 								None of the above
 							</label>
 
@@ -97,7 +97,7 @@
 	<textarea class="form-control" name="comments" id="comments" placeholder="comments">#rc.teamComments.comment_txt#</textarea>
 	</div>
 	<br />
-	<button type="button" class="btn btn-default" id="btnSubmit">Submit Scores</button>
+	<button type="button" class="btn btn-default" id="btnSubmit" onClick="frmAchievements.submit();">Submit Scores</button>
 	&nbsp;&nbsp;
 	<a class="btn btn-default" href="#BuildURL('main.enterscore')#">Return to Enter Score</a>
 	<br /><br />
@@ -106,11 +106,27 @@
 
 </cfoutput>
 <script>
+// clik function for submit
+$('#btnSubmit').click(function(){
+	confirmscore();
+});
+
 function highlight(checkId){
 	//checkboxes cant be styled. highlight the wrapper div:
 	var dNum = "d" + checkId; //changed to send id only, div id = d+ID
 	$("#"+dNum).addClass('checkSelected');
+}
+
+// for main enter score page
+function confirmscore(){
+	var theMessage = 'Confirm achievements for \n\n';
+	theMessage += $('#teamID').val();
+
+	if(confirm(theMessage)){
+			$('#frmAchievements').submit();
 	}
+}
+
 </script>
 
 
