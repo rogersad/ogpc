@@ -40,7 +40,7 @@
 
 							<label>
 							<input type="radio" class="cbox" id="c#rc.achievements.ID[achIndex]#" #isChecked#
-								onClick="highlight(#currentParent#)" name="score#currentParent#" value="#rc.achievements.ID[achIndex]#">
+								onClick="$('##d#currentParent#').addClass('checkSelected');" name="score#currentParent#" value="#rc.achievements.ID[achIndex]#">
 								#rc.achievements.DESCR[achIndex]#
 								<br />
 							</label>
@@ -111,10 +111,29 @@ $('#btnSubmit').click(function(){
 	confirmscore();
 });
 
+/*
 function highlight(checkId){
 	//checkboxes cant be styled. highlight the wrapper div:
 	var dNum = "d" + checkId; //changed to send id only, div id = d+ID
 	$("#"+dNum).addClass('checkSelected');
+}
+*/
+function highlight(checkId){
+	//checkboxes cant be styled. highlight the wrapper div:
+	var dNum = "d" + checkId; //changed to send id only, div id = d+ID
+	var checkboxId = "c" + checkId;
+
+	//for reset
+	if(checkId == 0){
+		$('div').removeClass('checkSelected');
+	}
+	else if ($("#"+checkboxId).prop('checked')) {
+		$("#"+dNum).addClass('checkSelected');
+	}
+	else{
+		$("#"+dNum).removeClass('checkSelected');
+	}
+
 }
 
 // for main enter score page
