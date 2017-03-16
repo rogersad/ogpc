@@ -15,9 +15,9 @@
 <br />
 
 
-	<h3><a href="#BuildURL('main.enterscore')#"> Score Achievements </a></h3>
+	<h3><a href="#BuildURL('main.enterscore')#&reload=true"> Score Achievements </a></h3>
 
-	<h3><a href="#BuildURL('main.default')#"> Home </a></h3>
+	<h3><a href="#BuildURL('main.default')#?reload=true"> Home </a></h3>
 
 
 </cfoutput>
