@@ -65,28 +65,15 @@
 				<cfset currentParent = rc.achievements.ID[achIndex]>
 
 				<div class="checkbox scoring" id="d#rc.achievements.ID[achIndex]#">
-				<!--- do this one, then loop children
-				<label>
-				<input type="radio" class="cbox" id="c#rc.achievements.ID[achIndex]#"
-					onClick="$('##d#currentParent#').addClass('checkSelected');" name="score#currentParent#" value="#rc.achievements.ID[achIndex]#">
-					#rc.achievements.DESCR[achIndex]#
-					<br />
-				</label>
-				--->
 				<!--- Assumes children will follow parents (DISPLAY_ORDER_NUM) --->
 				<!--- when done, this loop must BREAK and set outer loop index to next row --->
-<!--- RADIO1:id:#rc.achievements.ID[achIndex]#, achIndex:#achIndex#, parentID: #rc.achievements.PARENT_ID[achIndex]# currentParent:#currentParent#<br />
-<cfif rc.achievements.PARENT_ID[achIndex] EQ currentParent>TRUE<cfelse>FALSE</cfif> --->
 				<cfloop condition="rc.achievements.PARENT_ID[achIndex] EQ currentParent">
-<!--- RADIO2:id:#rc.achievements.ID[achIndex]#, achIndex:#achIndex#, parentID: #rc.achievements.PARENT_ID[achIndex]# currentParent:#currentParent#<br /> --->
-					<!--- <cfif rc.achievements.PARENT_ID[achIndex] EQ currentParent> --->
 					<label>
 					<input type="radio" class="cbox" id="c#rc.achievements.ID[achIndex]#"
 						onClick="$('##d#currentParent#').addClass('checkSelected');" name="score#currentParent#" value="#rc.achievements.ID[achIndex]#">
 						#rc.achievements.DESCR[achIndex]#
 						<br />
 					</label>
-					<!--- <cfelse> --->
 					<cfset achIndex++>
 				</cfloop>
 				<!--- write default: --->
@@ -97,7 +84,7 @@
 					<br />
 				</label>
 				<cfset currentParent = -1>  <!--- reset parent id --->
-				</div>                      <!--- close radio div --->
+				</div>
 			</cfif>
 
 			<div class="checkbox scoring" id="d#rc.achievements.ID[achIndex]#">

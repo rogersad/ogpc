@@ -1,8 +1,8 @@
 <cfset rc.pageTitle = 'Update Achievements'>
 <!--- <cfset rc.jslist = '<script src="includes/enterscore.js"></script>'> --->
-<cfset achIndex = 0> <!--- for sub-looping --->
+<cfset achIndex = 1> <!--- for sub-looping --->
 
-<!--- <cfdump var="#rc.teamAchievementsList#"> --->
+<!--- <cfdump var="#rc#"> --->
 
 <cfoutput>
 	<h2>UPDATE Achievements </h2>
@@ -16,51 +16,49 @@
 		<!--- loop by number so outer loop can be reset in case of radios --->
 		<cfloop from="1" to="#rc.achievements.RECORDCOUNT#" index="queryRow">
 			<!--- must use achIndex and not achIndex. queryRow can't be updated --->
-			<cfset achIndex++>
 			<cfif achIndex GT rc.achievements.RECORDCOUNT>
 				<cfbreak>
 			</cfif>
 
+<!--- id:#rc.achievements.ID[achIndex]#, achIndex:#achIndex#, parentID: #rc.achievements.PARENT_ID[achIndex]#<br /> --->
 			<!--- test for radio set --->
 			<cfif rc.achievements.HAS_CHILD_FLAG[achIndex] EQ 'Y'>
 				<cfset currentParent = rc.achievements.ID[achIndex]>
 
-				<div class="checkbox scoring #highlightClass#" id="d#rc.achievements.ID[achIndex]#">
-				<!--- do this one, then loop children --->
-				<label>
-				<input type="radio" class="cbox" id="c#rc.achievements.ID[achIndex]#"
-					onClick="$('##d#currentParent#').addClass('checkSelected');" name="score#currentParent#" value="#rc.achievements.ID[achIndex]#">
-					#rc.achievements.DESCR[achIndex]#
-					<br />
-				</label>
-
+				<div class="checkbox scoring" id="d#rc.achievements.ID[achIndex]#">
 				<!--- Assumes children will follow parents (DISPLAY_ORDER_NUM) --->
 				<!--- when done, this loop must BREAK and set outer loop index to next row --->
-				<cfloop  from="#achIndex+1#" to="#rc.achievements.RECORDCOUNT#" index="radioRow">
+				<cfset noRadioChecked = true>
+				<cfloop condition="rc.achievements.PARENT_ID[achIndex] EQ currentParent">
 
-					<cfif rc.achievements.PARENT_ID[radioRow] EQ currentParent>
-						<label>
-						<input type="radio" class="cbox" id="c#rc.achievements.ID[radioRow]#"
-							onClick="$('##d#currentParent#').addClass('checkSelected');" name="score#currentParent#" value="#rc.achievements.ID[radioRow]#">
-							#rc.achievements.DESCR[radioRow]#
-							<br />
-						</label>
+					<cfif listFind(rc.teamAchievementsList,rc.achievements.ID[achIndex])>
+						<cfset isChecked = 'checked'>
+						<cfset noRadioChecked = false>
 					<cfelse>
-						<label>
-						<input type="radio" class="cbox" id="none#rc.achievements.ID[radioRow]#"
-							name="score#currentParent#" value="0" onClick="$('##d#currentParent#').removeClass('checkSelected');" >
-							None of the above
-							<br />
-						</label>
-						<cfset currentParent = -1>  <!--- reset parent id --->
-						<cfset achIndex = radioRow> <!--- reset outerloop --->
-						<cfbreak>					<!--- break --->
+						<cfset isChecked = ''>
 					</cfif>
+
+					<label>
+					<input type="radio" class="cbox" id="c#rc.achievements.ID[achIndex]#" #isChecked#
+						onClick="$('##d#currentParent#').addClass('checkSelected');" name="score#currentParent#" value="#rc.achievements.ID[achIndex]#">
+						#rc.achievements.DESCR[achIndex]#
+						<br />
+					</label>
+					<cfset achIndex++>
 				</cfloop>
-				</div>                      <!--- close radio div --->
+
+				<!--- write default: --->
+				<label>
+				<input type="radio" class="cbox" id="none#rc.achievements.ID[achIndex]#" <cfif noRadioChecked>checked</cfif>
+					name="score#currentParent#" value="0" onClick="$('##d#currentParent#').removeClass('checkSelected');" >
+					None of the above
+					<br />
+				</label>
+				<!--- <cfset currentParent = -1>  reset parent id --->
+				</div>
 			</cfif>
 
-			<!--- was this one checked? --->
+			<!--- was this checkbox checked? --->
 			<cfif listFind(rc.teamAchievementsList,rc.achievements.ID[achIndex])>
 				<cfset isChecked = 'checked'>
 				<cfset highlightClass = 'checkSelected'>
@@ -77,7 +75,9 @@
 				#rc.achievements.DESCR[achIndex]#
 			</label>
 			</div>
+			<cfset achIndex++>
 		</cfloop>
+
 
 <!--- 		<cfloop from="1" to="#rc.achievements.RECORDCOUNT#" index="queryRow">
 
