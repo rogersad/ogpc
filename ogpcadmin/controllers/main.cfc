@@ -18,7 +18,25 @@
 	</cffunction>
 
 
-	<!--- *** reports(rc) --->
+	<!--- *** default(rc) --->
+	<cffunction name="error" access="public">
+		<cfargument name="rc" required="true">
+
+
+	</cffunction>
+
+
+	<!--- *** default(rc) --->
+	<cffunction name="readlog" access="public">
+		<cfargument name="rc" required="true">
+
+		<cfset rc.log = variables.ogpcService.getLog()>
+
+	</cffunction>
+
+
+
+	<!--- *** teamScore(rc) creates everything for the team completed score sheets --->
 	<cffunction name="teamScore" access="public">
 		<cfargument name="rc" required="true">
 
@@ -58,7 +76,50 @@
 	</cffunction>
 
 
-		<!--- *** reports(rc) --->
+		<!--- *** reports(rc) creates quick grid of teams, cat totals --->
+	<cffunction name="reports" access="public">
+		<cfargument name="rc" required="true">
+
+		<cfset var currentCatId = 0>
+		<cfset var currentZeroCount = 0>
+		<cfset var currentTeamId = 0>
+		<cfset var runningTotal = 0>
+		<cfset var gridRow = 0>
+
+		<!--- loop teams and calculate score --->
+		<cfset rc.rawScore = variables.ogpcService.getReport()>
+		<!--- returns TEAM_ID,NAME,CATEGORY_ID,POINT_VALUE,CATEGORY_DESCR,ACHIEVEMENT_ID,SCHOOL_NAME --->
+
+		<cfloop from="1" to="#Len(rc.rawScore)#" index="curRow">
+		<!--- for each category: --->
+			<!--- add up scores --->
+			<!--- count zeros --->
+			<!--- calc bonus --->
+			<cfif currentTeamId NEQ rc.rawScore.TEAM_ID[curRow]>
+				<cfset currentTeamId = rc.rawScore.TEAM_ID[curRow]>
+				<cfset gridRow++>
+				<cfset rc.grid[gridRow] = '#rc.rawScore.TEAM_ID[curRow]#,#rc.rawScore.NAME[curRow]#'>
+			</cfif>
+
+			<cfif currentCatId NEQ rc.rawScore.CATEGORY_ID[curRow]>
+				<cfset currentCatId = rc.rawScore.CATEGORY_ID[curRow]>
+				<cfset ListAppend(rc.grid[gridRow],runningTotal + variables.ogpcService.BonusCalc(currentZeroCount))>
+				<cfset runningTotal = 0>
+				<cfset currentZeroCount = 0>
+			</cfif>
+
+			<cfif rc.rawScore.POINT_VALUE[curRow] EQ 0>
+				<cfset currentZeroCount++>
+			<cfelse>
+				<cfset runningTotal += rc.rawScore.POINT_VALUE[curRow]>
+			</cfif>
+
+		</cfloop>
+
+	</cffunction>
+
+
+	<!--- *** reports(rc)
 	<cffunction name="reports" access="public">
 		<cfargument name="rc" required="true">
 
@@ -99,7 +160,7 @@
 			<cfset rc.achievements[currentCat] = variables.ogpcService.getAchievements(rc.categories.ID[currentCat])>
 		</cfloop>
 	</cffunction>
-
+ --->
 
 	<!--- loadSchools(RawJSON) loads JSON dump from TMS --->
 	<cffunction name="loadSchools">
