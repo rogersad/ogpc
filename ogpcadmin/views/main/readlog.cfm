@@ -1,0 +1,3 @@
+<cfoutput>
+#rc.log#
+</cfoutput>
