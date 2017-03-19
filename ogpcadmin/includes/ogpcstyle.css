@@ -74,6 +74,13 @@ div .checkSelected {
     
 }
 
-
-
+.display{
+    margin:20px;
+}
+th{
+    font-size:1.2em;
+}
+.red{
+    border:1px solid #B92C28;
+}
 
