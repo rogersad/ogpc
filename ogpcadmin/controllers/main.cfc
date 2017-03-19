@@ -97,13 +97,18 @@
 		<cfset currentTeamId = rc.rawScore.TEAM_ID[1]>
 		<cfset currentCatId = rc.rawScore.CATEGORY_ID[1]>
 		<cfset rc.grid = ArrayNew()>  <!--- an array of structs --->
-		<cfset rc.grid[1] = '#currentTeamId#,#rc.rawScore.M_H_CODE[1]#,#rc.rawScore.NAME[1]#'>
+		<!--- <cfset rc.grid[1] = '#currentTeamId#,#rc.rawScore.M_H_CODE[1]#,#rc.rawScore.NAME[1]#'> --->
+		<cfset rc.grid[1] = structNew()>
+		<cfset rc.grid[1].teamId = currentTeamId>
+		<cfset rc.grid[1].name = rc.rawScore.NAME[1]>
+		<cfset rc.grid[1].mh = rc.rawScore.M_H_CODE[1]>
 
 		<cfloop from="1" to="#Len(rc.rawScore)#" index="curRow">
 			<!--- new category, save current scores: --->
 			<cfif currentCatId NEQ rc.rawScore.CATEGORY_ID[curRow]>
-				<cfset tempData = currentCatId & '|' & runningTotal + variables.ogpcService.BonusCalc(currentZeroCount)>
-				<cfset rc.grid[gridRow] = ListAppend(rc.grid[gridRow],tempData)>
+				<cfset tempData = runningTotal + variables.ogpcService.BonusCalc(currentZeroCount)>
+				<!--- <cfset rc.grid[gridRow] = ListAppend(rc.grid[gridRow],tempData)> --->
+				<cfset rc.grid[gridRow]['cat#rc.rawScore.CATEGORY_ID[curRow]#'] = tempData>
 				<cfset runningTotal = 0>
 				<cfset currentZeroCount = 0>
 				<cfset currentCatId = rc.rawScore.CATEGORY_ID[curRow]>
@@ -113,7 +118,11 @@
 			<cfif currentTeamId NEQ rc.rawScore.TEAM_ID[curRow]>
 				<cfset currentTeamId = rc.rawScore.TEAM_ID[curRow]>
 				<cfset gridRow++>
-				<cfset rc.grid[gridRow] = '#currentTeamId#,#rc.rawScore.M_H_CODE[curRow]#,#rc.rawScore.NAME[curRow]#'>
+				<!--- <cfset rc.grid[gridRow] = '#currentTeamId#,#rc.rawScore.M_H_CODE[curRow]#,#rc.rawScore.NAME[curRow]#'> --->
+				<cfset rc.grid[gridRow] = structNew()>
+				<cfset rc.grid[gridRow].teamId = currentTeamId>
+				<cfset rc.grid[gridRow].name = rc.rawScore.NAME[curRow]>
+				<cfset rc.grid[gridRow].mh = rc.rawScore.M_H_CODE[curRow]>
 			</cfif>
 
 			<cfif rc.rawScore.POINT_VALUE[curRow] EQ 0>
@@ -123,9 +132,11 @@
 			</cfif>
 
 		</cfloop>
-		<!--- write the last one: --->
-		<cfset tempData = currentCatId & '|' & runningTotal + variables.ogpcService.BonusCalc(currentZeroCount)>
-		<cfset rc.grid[gridRow] = ListAppend(rc.grid[gridRow],tempData)>
+
+		<!--- write the last score: --->
+		<cfset tempData = runningTotal + variables.ogpcService.BonusCalc(currentZeroCount)>
+		<cfset rc.grid[gridRow]['cat#rc.rawScore.CATEGORY_ID[Len(rc.rawScore)]#'] = tempData>
+
 
 	</cffunction>
 
