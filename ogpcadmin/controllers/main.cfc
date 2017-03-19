@@ -76,7 +76,7 @@
 	</cffunction>
 
 
-		<!--- *** reports(rc) creates quick grid of teams, cat totals --->
+	<!--- *** reports(rc) creates quick grid of teams, cat totals --->
 	<cffunction name="reports" access="public">
 		<cfargument name="rc" required="true">
 
@@ -137,52 +137,9 @@
 		<cfset tempData = runningTotal + variables.ogpcService.BonusCalc(currentZeroCount)>
 		<cfset rc.grid[gridRow]['cat#rc.rawScore.CATEGORY_ID[Len(rc.rawScore)]#'] = tempData>
 
-
 	</cffunction>
 
 
-	<!--- *** reports(rc)
-	<cffunction name="reports" access="public">
-		<cfargument name="rc" required="true">
-
-		<cfset var currentTeam = 1>
-		<cfset rc.scores = variables.ogpcService.getReport()>
-		<cfset rc.teams = variables.ogpcService.getTeams()>
-		<cfset rc.categories = variables.ogpcService.getCategories()>
-		<cfset rc.teamCategories = structNew()>
-		<cfset rc.teamResult = structNew()>
-		<cfset rc.teamResult[1].ID = rc.scores.team_ID[1]>
-		<cfset rc.teamResult[1].name = rc.scores.NAME[1]>
-		<cfset rc.teamResult[1].points = 0>
-		<cfset rc.teamResult[1].zeroCount = 0>
-		<cfset rc.teamResult[1].totalScore = 0>
-
-		<cfloop from="1" to="#rc.scores.recordCount#" index="curRow">
-			<cfif rc.teamResult[currentTeam].ID NEQ rc.scores.team_ID[curRow]>
-				<cfset currentTeam += 1>
-				<cfset rc.teamResult[currentTeam].ID = rc.scores.team_ID[curRow]>
-				<cfset rc.teamResult[currentTeam].name = rc.scores.NAME[curRow]>
-				<cfset rc.teamResult[currentTeam].points = 0>
-				<cfset rc.teamResult[currentTeam].zeroCount = 0>
-				<cfset rc.teamResult[currentTeam].totalScore = 0>
-			</cfif>
-
-			<cfset rc.teamResult[currentTeam].points += rc.scores.POINT_VALUE[curRow]>
-			<cfif rc.scores.POINT_VALUE[curRow] EQ 0>
-				<cfset rc.teamResult[currentTeam].zeroCount += 1>
-			</cfif>
-
-		</cfloop>
-
-		<cfloop from="1" to="#Len(rc.teamResult)#" index="curTeam">
-			<cfset rc.teamResult[curTeam].totalScore = rc.teamResult[curTeam].points + variables.ogpcService.BonusCalc( rc.teamResult[curTeam].zeroCount)>
-		</cfloop>
-
-		<cfloop  from="1" to="#Len(rc.categories)#" index="currentCat">
-			<cfset rc.achievements[currentCat] = variables.ogpcService.getAchievements(rc.categories.ID[currentCat])>
-		</cfloop>
-	</cffunction>
- --->
 
 	<!--- loadSchools(RawJSON) loads JSON dump from TMS --->
 	<cffunction name="loadSchools">
