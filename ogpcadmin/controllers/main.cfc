@@ -76,69 +76,69 @@
 	</cffunction>
 
 
-	<!--- *** reports(rc) creates quick grid of teams, cat totals --->
 	<cffunction name="reports" access="public">
 		<cfargument name="rc" required="true">
 
-		<cfset var currentCatId = 0>
-		<cfset var currentZeroCount = 0>
-		<cfset var currentTeamId = 0>
-		<cfset var runningTotal = 0>
-		<cfset var bonusTotal = 0>
-		<cfset var catTotal = 0>
-		<cfset var gridRow = 1>
-		<cfset var tempData = ''>
-
-		<!--- loop teams and calculate score --->
+		<cfset var indexArray = ArrayNew()>
+		<cfset var teamIndex = 0>
+		<cfset var tempBonus = 0>
+		<cfset var teamList = variables.ogpcService.getTeams()>
 		<cfset rc.rawScore = variables.ogpcService.getReport()>
-		<!--- returns TEAM_ID,NAME,CATEGORY_ID,POINT_VALUE,CATEGORY_DESCR,ACHIEVEMENT_ID,SCHOOL_NAME --->
-
-		<!--- set initial values for rc.grid(teamId,name) --->
-		<cfset currentTeamId = rc.rawScore.TEAM_ID[1]>
-		<cfset currentCatId = rc.rawScore.CATEGORY_ID[1]>
 		<cfset rc.grid = ArrayNew()>  <!--- an array of structs --->
-		<!--- <cfset rc.grid[1] = '#currentTeamId#,#rc.rawScore.M_H_CODE[1]#,#rc.rawScore.NAME[1]#'> --->
-		<cfset rc.grid[1] = structNew()>
-		<cfset rc.grid[1].teamId = currentTeamId>
-		<cfset rc.grid[1].name = rc.rawScore.NAME[1]>
-		<cfset rc.grid[1].mh = rc.rawScore.M_H_CODE[1]>
 
-		<cfloop from="1" to="#Len(rc.rawScore)#" index="curRow">
-			<!--- new category, save current scores: --->
-			<cfif currentCatId NEQ rc.rawScore.CATEGORY_ID[curRow]>
-				<cfset tempData = runningTotal + variables.ogpcService.BonusCalc(currentZeroCount)>
-				<!--- <cfset rc.grid[gridRow] = ListAppend(rc.grid[gridRow],tempData)> --->
-				<cfset rc.grid[gridRow]['cat#rc.rawScore.CATEGORY_ID[curRow]#'] = tempData>
-				<cfset runningTotal = 0>
-				<cfset currentZeroCount = 0>
-				<cfset currentCatId = rc.rawScore.CATEGORY_ID[curRow]>
-			</cfif>
-
-			<!--- new team, start new array(grid): --->
-			<cfif currentTeamId NEQ rc.rawScore.TEAM_ID[curRow]>
-				<cfset currentTeamId = rc.rawScore.TEAM_ID[curRow]>
-				<cfset gridRow++>
-				<!--- <cfset rc.grid[gridRow] = '#currentTeamId#,#rc.rawScore.M_H_CODE[curRow]#,#rc.rawScore.NAME[curRow]#'> --->
-				<cfset rc.grid[gridRow] = structNew()>
-				<cfset rc.grid[gridRow].teamId = currentTeamId>
-				<cfset rc.grid[gridRow].name = rc.rawScore.NAME[curRow]>
-				<cfset rc.grid[gridRow].mh = rc.rawScore.M_H_CODE[curRow]>
-			</cfif>
-
-			<cfif rc.rawScore.POINT_VALUE[curRow] EQ 0>
-				<cfset currentZeroCount++>
-			<cfelse>
-				<cfset runningTotal += rc.rawScore.POINT_VALUE[curRow]>
-			</cfif>
-
+		<cfloop from="1" to="#teamList.recordCount#" index="teamRow">
+			<!--- do index: --->
+			<cfset indexArray[teamRow] = teamList.ID[teamRow]>
+			<!--- insert grid struct: T.ID, T.NAME, T.M_H_CODE, S.SCHOOL_NAME --->
+			<cfset rc.grid[teamRow] = structNew()>
+			<cfset rc.grid[teamRow].teamId = teamList.ID[teamRow]>
+			<cfset rc.grid[teamRow].name = teamList.NAME[teamRow]>
+			<cfset rc.grid[teamRow].mh = teamList.M_H_CODE[teamRow]>
+			<cfset rc.grid[teamRow].cat1Bonus = 0>
+			<cfset rc.grid[teamRow].cat2Bonus = 0>
+			<cfset rc.grid[teamRow].cat3Bonus = 0>
+			<cfset rc.grid[teamRow].cat4Bonus = 0>
+			<cfset rc.grid[teamRow].cat5Bonus = 0>
 		</cfloop>
 
-		<!--- write the last score: --->
-		<cfset tempData = runningTotal + variables.ogpcService.BonusCalc(currentZeroCount)>
-		<cfset rc.grid[gridRow]['cat#rc.rawScore.CATEGORY_ID[Len(rc.rawScore)]#'] = tempData>
+		<cfloop from="1" to="#rc.rawScore.recordCount#" index="curRow">
+			<!--- get the index of team Struct from indexArray: --->
+			<cfset teamIndex = ArrayFind(indexArray,rc.rawScore.TEAM_ID[curRow])>
+
+			<cfif rc.rawScore.POINT_VALUE[curRow] GT 0> <!--- regular scores: --->
+				<cfif structKeyExists(rc.grid[teamIndex], 'cat#rc.rawScore.CATEGORY_ID[curRow]#')>
+					<cfset rc.grid[teamIndex]['cat#rc.rawScore.CATEGORY_ID[curRow]#'] += rc.rawScore.POINT_VALUE[curRow]>
+				<cfelse>
+					<cfset rc.grid[teamIndex]['cat#rc.rawScore.CATEGORY_ID[curRow]#'] = rc.rawScore.POINT_VALUE[curRow]>
+				</cfif>
+			<cfelse> <!--- bonus scores --->
+				<cfif structKeyExists(rc.grid[teamIndex], 'catBonus#rc.rawScore.CATEGORY_ID[curRow]#')>
+					<cfset rc.grid[teamIndex]['catBonus#rc.rawScore.CATEGORY_ID[curRow]#'] += 1> <!--- bonus = count of 0 --->
+				<cfelse>
+					<cfset rc.grid[teamIndex]['cat#rc.rawScore.CATEGORY_ID[curRow]#'] = 1>
+				</cfif>
+			</cfif>
+		</cfloop>
+
+		<!--- loop again to calc bonus scores from catBonus1, catBonus2... --->
+		<cfloop from="1" to="#teamList.recordCount#" index="curRow">
+			<cfset tempBonus = variables.ogpcService.BonusCalc(rc.grid[curRow].cat1Bonus)>
+			<cfset rc.grid[curRow].cat1Bonus = tempBonus>
+
+			<cfset tempBonus = variables.ogpcService.BonusCalc(rc.grid[curRow].cat2Bonus)>
+			<cfset rc.grid[curRow].cat2Bonus = tempBonus>
+
+			<cfset tempBonus = variables.ogpcService.BonusCalc(rc.grid[curRow].cat3Bonus)>
+			<cfset rc.grid[curRow].cat3Bonus = tempBonus>
+
+			<cfset tempBonus = variables.ogpcService.BonusCalc(rc.grid[curRow].cat4Bonus)>
+			<cfset rc.grid[curRow].cat4Bonus = tempBonus>
+
+			<cfset tempBonus = variables.ogpcService.BonusCalc(rc.grid[curRow].cat5Bonus)>
+			<cfset rc.grid[curRow].cat5Bonus = tempBonus>
+		</cfloop>
 
 	</cffunction>
-
 
 
 	<!--- loadSchools(RawJSON) loads JSON dump from TMS --->

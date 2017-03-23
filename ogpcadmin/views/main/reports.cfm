@@ -1,9 +1,9 @@
 <cfoutput>
 
 <cfset rc.pageTitle = 'Team Achievement Results'>
-<cfset rc.jslist = '<script src="includes/jquery.dataTables.min.js" />'>
+<cfset rc.jslist = '<script language="javascript" src="includes/jquery.dataTables.min.js"></script>'>
+<cfset rc.jslist &= '<script language="javascript" src="includes/reports.js"></script>'>
 <cfset rc.jslist &= '<link rel="stylesheet" type="text/css" href="includes/jquery.dataTables.min.css"/>'>
-
 
 <div class="secondary">
 
@@ -26,11 +26,7 @@
 		<!--- row total:--->
 		<cfset tempTotal = 0>
 		<!--- if incomplete score, highlihgt row: --->
-		<cfif Len(curGrid) LT 8>
-			<cfset rowClass = 'red'> <cfelse> <cfset rowClass = ''>
-		</cfif>
-
-		<tr class='#rowClass#'>
+		<tr>
 
 		<!--- id,name this one should always be here. --->
 		<cfif StructKeyExists(rc.grid[curGrid],'teamId') AND StructKeyExists(rc.grid[curGrid],'Name')>
@@ -49,41 +45,46 @@
 		<!--- cat1 (programming) --->
 		<cfif StructKeyExists(rc.grid[curGrid],'cat1')>
 			<cfset tempTotal += rc.grid[curGrid].cat1>
+			<cfset tempTotal += rc.grid[curGrid].cat1Bonus>
 			<td class="right">#rc.grid[curGrid].cat1#</td>
 		<cfelse>
-			<td></td>
+			<td class="incomplete"></td>
 		</cfif>
 
 		<!--- cat2 (theme) --->
 		<cfif StructKeyExists(rc.grid[curGrid],'cat2')>
 			<cfset tempTotal += rc.grid[curGrid].cat2>
+			<cfset tempTotal += rc.grid[curGrid].cat2Bonus>
 			<td class="right">#rc.grid[curGrid].cat2#</td>
 		<cfelse>
-			<td></td>
+			<td class="incomplete"></td>
 		</cfif>
 
 		<!--- cat3 (theme) --->
 		<cfif StructKeyExists(rc.grid[curGrid],'cat3')>
 			<cfset tempTotal += rc.grid[curGrid].cat3>
+			<cfset tempTotal += rc.grid[curGrid].cat3Bonus>
 			<td class="right">#rc.grid[curGrid].cat3#</td>
 		<cfelse>
-			<td></td>
+			<td class="incomplete"></td>
 		</cfif>
 
 		<!--- cat4 (art) --->
 		<cfif StructKeyExists(rc.grid[curGrid],'cat4')>
 			<cfset tempTotal += rc.grid[curGrid].cat4>
+			<cfset tempTotal += rc.grid[curGrid].cat4Bonus>
 			<td class="right">#rc.grid[curGrid].cat4#</td>
 		<cfelse>
-			<td></td>
+			<td class="incomplete"></td>
 		</cfif>
 
 		<!--- cat5 (professional) --->
 		<cfif StructKeyExists(rc.grid[curGrid],'cat5')>
 			<cfset tempTotal += rc.grid[curGrid].cat5>
+			<cfset tempTotal += rc.grid[curGrid].cat5Bonus>
 			<td class="right">#rc.grid[curGrid].cat5#</td>
 		<cfelse>
-			<td></td>
+			<td class="incomplete"></td>
 		</cfif>
 
 		<!--- total --->
@@ -95,30 +96,6 @@
 	</tbody>
 </table>
 
-<!--- --->
-<script>
-$("tr:odd").css("background-color","##dddddd");
-
-$(document).ready(function(){
-    $('##scoreTable').DataTable({
-        "aoColumns":[
-        	{bSortable:true},
-        	{bSortable:true},
-        	{bSortable:true},
-        	{bSortable:true},
-        	{bSortable:true},
-        	{bSortable:true},
-        	{bSortable:true},
-        	{bSortable:true}
-        ]
-    });
-});
-</script>
-
-
-<cfdump var="#rc#">
-
-
-
 </div>
 </cfoutput>
+<cfdump var="#rc#">
