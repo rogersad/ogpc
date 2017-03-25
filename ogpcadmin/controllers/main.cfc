@@ -10,7 +10,7 @@
 
 
 	<!--- *** default(rc) --->
-	<cffunction name="default" access="public">
+	<cffunction name="default" access="public" output="false">
 		<cfargument name="rc" required="true">
 
 		<cfset rc.teams = variables.ogpcService.getTeams()>
@@ -19,7 +19,7 @@
 
 
 	<!--- *** default(rc) --->
-	<cffunction name="error" access="public">
+	<cffunction name="error" access="public" output="false">
 		<cfargument name="rc" required="true">
 
 
@@ -27,7 +27,7 @@
 
 
 	<!--- *** default(rc) --->
-	<cffunction name="readlog" access="public">
+	<cffunction name="readlog" access="public" output="false">
 		<cfargument name="rc" required="true">
 
 		<cfset rc.log = variables.ogpcService.getLog()>
@@ -37,7 +37,7 @@
 
 
 	<!--- *** teamScore(rc) creates everything for the team completed score sheets --->
-	<cffunction name="teamScore" access="public">
+	<cffunction name="teamScore" access="public" output="false">
 		<cfargument name="rc" required="true">
 
 		<cfset var earnedPoints = 0>
@@ -76,7 +76,7 @@
 	</cffunction>
 
 
-	<cffunction name="reports" access="public">
+	<cffunction name="reports" access="public" output="false">
 		<cfargument name="rc" required="true">
 
 		<cfset var indexArray = ArrayNew()>
@@ -137,12 +137,11 @@
 			<cfset tempBonus = variables.ogpcService.BonusCalc(rc.grid[curRow].cat5Bonus)>
 			<cfset rc.grid[curRow].cat5Bonus = tempBonus>
 		</cfloop>
-
 	</cffunction>
 
 
 	<!--- loadSchools(RawJSON) loads JSON dump from TMS --->
-	<cffunction name="loadSchools">
+	<cffunction name="loadSchools" output="false">
 		<cfargument name="rc" required="true">
 
 		<cfset var schoolURL = "http://tms.ogpc.info/api/schools">
