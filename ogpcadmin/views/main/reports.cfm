@@ -32,7 +32,7 @@
 
 			<!--- id,name this one should always be here. --->
 			<cfif StructKeyExists(rc.grid[curGrid],'teamId') AND StructKeyExists(rc.grid[curGrid],'Name')>
-				<td>#rc.grid[curGrid].TEAMID#, #rc.grid[curGrid].NAME#</td>
+				<td>#rc.grid[curGrid].TEAMID#, #rc.grid[curGrid].NAME#<br />#rc.grid[curGrid].school#</td>
 			<cfelse>
 				<td>&nbsp;</td>
 			</cfif>
@@ -45,46 +45,46 @@
 			</cfif>
 			--->
 			<!--- cat1 (programming) --->
-			<cfif StructKeyExists(rc.grid[curGrid],'cat1')>
+			<cfif rc.grid[curGrid].cat1 GT 0>  <!--- StructKeyExists(rc.grid[curGrid],'cat1') --->
 				<cfset tempTotal += rc.grid[curGrid].cat1>
 				<cfset tempTotal += rc.grid[curGrid].cat1Bonus>
-				<td class="right">#rc.grid[curGrid].cat1#</td>
+				<td class="right">#rc.grid[curGrid].cat1 + rc.grid[curGrid].cat1Bonus#</td>
 			<cfelse>
 				<td class="incomplete"></td>
 			</cfif>
 
 			<!--- cat2 (theme) --->
-			<cfif StructKeyExists(rc.grid[curGrid],'cat2')>
+			<cfif rc.grid[curGrid].cat2 GT 0>
 				<cfset tempTotal += rc.grid[curGrid].cat2>
 				<cfset tempTotal += rc.grid[curGrid].cat2Bonus>
-				<td class="right">#rc.grid[curGrid].cat2#</td>
+				<td class="right">#rc.grid[curGrid].cat2 + rc.grid[curGrid].cat2Bonus#</td>
 			<cfelse>
 				<td class="incomplete"></td>
 			</cfif>
 
 			<!--- cat3 (theme) --->
-			<cfif StructKeyExists(rc.grid[curGrid],'cat3')>
+			<cfif rc.grid[curGrid].cat3 GT 0>
 				<cfset tempTotal += rc.grid[curGrid].cat3>
 				<cfset tempTotal += rc.grid[curGrid].cat3Bonus>
-				<td class="right">#rc.grid[curGrid].cat3#</td>
+				<td class="right">#rc.grid[curGrid].cat3 + rc.grid[curGrid].cat3Bonus#</td>
 			<cfelse>
 				<td class="incomplete"></td>
 			</cfif>
 
 			<!--- cat4 (art) --->
-			<cfif StructKeyExists(rc.grid[curGrid],'cat4')>
+			<cfif rc.grid[curGrid].cat4 GT 0>
 				<cfset tempTotal += rc.grid[curGrid].cat4>
 				<cfset tempTotal += rc.grid[curGrid].cat4Bonus>
-				<td class="right">#rc.grid[curGrid].cat4#</td>
+				<td class="right">#rc.grid[curGrid].cat4 + rc.grid[curGrid].cat4Bonus#</td>
 			<cfelse>
 				<td class="incomplete"></td>
 			</cfif>
 
 			<!--- cat5 (professional) --->
-			<cfif StructKeyExists(rc.grid[curGrid],'cat5')>
+			<cfif  rc.grid[curGrid].cat5 GT 0>
 				<cfset tempTotal += rc.grid[curGrid].cat5>
 				<cfset tempTotal += rc.grid[curGrid].cat5Bonus>
-				<td class="right">#rc.grid[curGrid].cat5#</td>
+				<td class="right">#rc.grid[curGrid].cat5 + rc.grid[curGrid].cat5Bonus#</td>
 			<cfelse>
 				<td class="incomplete"></td>
 			</cfif>
@@ -126,7 +126,7 @@
 
 			<!--- id,name this one should always be here. --->
 			<cfif StructKeyExists(rc.grid[curGrid],'teamId') AND StructKeyExists(rc.grid[curGrid],'Name')>
-				<td>#rc.grid[curGrid].TEAMID#, #rc.grid[curGrid].NAME#</td>
+				<td>#rc.grid[curGrid].TEAMID#, #rc.grid[curGrid].NAME#<br />#rc.grid[curGrid].school#</td>
 			<cfelse>
 				<td>&nbsp;</td>
 			</cfif>
@@ -139,46 +139,46 @@
 			</cfif>
 			--->
 			<!--- cat1 (programming) --->
-			<cfif StructKeyExists(rc.grid[curGrid],'cat1')>
+			<cfif rc.grid[curGrid].cat1 GT 0> <!--- StructKeyExists(rc.grid[curGrid],'cat1') AND  --->
 				<cfset tempTotal += rc.grid[curGrid].cat1>
 				<cfset tempTotal += rc.grid[curGrid].cat1Bonus>
-				<td class="right">#rc.grid[curGrid].cat1#</td>
+				<td class="right">#rc.grid[curGrid].cat1 + rc.grid[curGrid].cat1Bonus#</td>
 			<cfelse>
 				<td class="incomplete"></td>
 			</cfif>
 
 			<!--- cat2 (theme) --->
-			<cfif StructKeyExists(rc.grid[curGrid],'cat2')>
+			<cfif rc.grid[curGrid].cat2 GT 0>
 				<cfset tempTotal += rc.grid[curGrid].cat2>
 				<cfset tempTotal += rc.grid[curGrid].cat2Bonus>
-				<td class="right">#rc.grid[curGrid].cat2#</td>
+				<td class="right">#rc.grid[curGrid].cat2 + rc.grid[curGrid].cat2Bonus#</td>
 			<cfelse>
 				<td class="incomplete"></td>
 			</cfif>
 
 			<!--- cat3 (theme) --->
-			<cfif StructKeyExists(rc.grid[curGrid],'cat3')>
+			<cfif rc.grid[curGrid].cat3 GT 0>
 				<cfset tempTotal += rc.grid[curGrid].cat3>
 				<cfset tempTotal += rc.grid[curGrid].cat3Bonus>
-				<td class="right">#rc.grid[curGrid].cat3#</td>
+				<td class="right">#rc.grid[curGrid].cat3 + rc.grid[curGrid].cat3Bonus#</td>
 			<cfelse>
 				<td class="incomplete"></td>
 			</cfif>
 
 			<!--- cat4 (art) --->
-			<cfif StructKeyExists(rc.grid[curGrid],'cat4')>
+			<cfif rc.grid[curGrid].cat4 GT 0>
 				<cfset tempTotal += rc.grid[curGrid].cat4>
 				<cfset tempTotal += rc.grid[curGrid].cat4Bonus>
-				<td class="right">#rc.grid[curGrid].cat4#</td>
+				<td class="right">#rc.grid[curGrid].cat4 + rc.grid[curGrid].cat4Bonus#</td>
 			<cfelse>
 				<td class="incomplete"></td>
 			</cfif>
 
 			<!--- cat5 (professional) --->
-			<cfif StructKeyExists(rc.grid[curGrid],'cat5')>
+			<cfif rc.grid[curGrid].cat5 GT 0>
 				<cfset tempTotal += rc.grid[curGrid].cat5>
 				<cfset tempTotal += rc.grid[curGrid].cat5Bonus>
-				<td class="right">#rc.grid[curGrid].cat5#</td>
+				<td class="right">#rc.grid[curGrid].cat5 + rc.grid[curGrid].cat5Bonus#</td>
 			<cfelse>
 				<td class="incomplete"></td>
 			</cfif>
@@ -193,6 +193,8 @@
 </table>
 <br /><br />
 </div>
+
 </cfoutput>
 
-<!--- <cfdump var="#rc#"> --->
+<cfdump var="#rc.grid#">
+<cfdump var="#rc.rawScore#">
