@@ -94,6 +94,12 @@
 			<cfset rc.grid[teamRow].teamId = teamList.ID[teamRow]>
 			<cfset rc.grid[teamRow].name = teamList.NAME[teamRow]>
 			<cfset rc.grid[teamRow].mh = teamList.M_H_CODE[teamRow]>
+			<cfset rc.grid[teamRow].school = teamList.SCHOOL_NAME[teamRow]>
+			<cfset rc.grid[teamRow].cat1 = 0>
+			<cfset rc.grid[teamRow].cat2 = 0>
+			<cfset rc.grid[teamRow].cat3 = 0>
+			<cfset rc.grid[teamRow].cat4 = 0>
+			<cfset rc.grid[teamRow].cat5 = 0>
 			<cfset rc.grid[teamRow].cat1Bonus = 0>
 			<cfset rc.grid[teamRow].cat2Bonus = 0>
 			<cfset rc.grid[teamRow].cat3Bonus = 0>
@@ -104,7 +110,24 @@
 		<cfloop from="1" to="#rc.rawScore.recordCount#" index="curRow">
 			<!--- get the index of team Struct from indexArray: --->
 			<cfset teamIndex = ArrayFind(indexArray,rc.rawScore.TEAM_ID[curRow])>
+			<cfswitch expression="#rc.rawScore.CATEGORY_ID[curRow]#">
+				<cfcase value="1"><cfset rc.grid[teamIndex]['cat1'] += rc.rawScore.POINT_VALUE[curRow]></cfcase>
+				<cfcase value="2"><cfset rc.grid[teamIndex]['cat2'] += rc.rawScore.POINT_VALUE[curRow]></cfcase>
+				<cfcase value="3"><cfset rc.grid[teamIndex]['cat3'] += rc.rawScore.POINT_VALUE[curRow]></cfcase>
+				<cfcase value="4"><cfset rc.grid[teamIndex]['cat4'] += rc.rawScore.POINT_VALUE[curRow]></cfcase>
+				<cfcase value="5"><cfset rc.grid[teamIndex]['cat5'] += rc.rawScore.POINT_VALUE[curRow]></cfcase>
+			</cfswitch>
 
+			<cfif rc.rawScore.POINT_VALUE[curRow] EQ 0>
+				<cfswitch expression="#rc.rawScore.CATEGORY_ID[curRow]#">
+					<cfcase value="1"><cfset rc.grid[teamIndex]['cat1Bonus'] += 1></cfcase>
+					<cfcase value="2"><cfset rc.grid[teamIndex]['cat2Bonus'] += 1></cfcase>
+					<cfcase value="3"><cfset rc.grid[teamIndex]['cat3Bonus'] += 1></cfcase>
+					<cfcase value="4"><cfset rc.grid[teamIndex]['cat4Bonus'] += 1></cfcase>
+					<cfcase value="5"><cfset rc.grid[teamIndex]['cat5Bonus'] += 1></cfcase>
+				</cfswitch>
+			</cfif>
+			<!---
 			<cfif rc.rawScore.POINT_VALUE[curRow] GT 0> <!--- regular scores: --->
 				<cfif structKeyExists(rc.grid[teamIndex], 'cat#rc.rawScore.CATEGORY_ID[curRow]#')>
 					<cfset rc.grid[teamIndex]['cat#rc.rawScore.CATEGORY_ID[curRow]#'] += rc.rawScore.POINT_VALUE[curRow]>
@@ -118,6 +141,7 @@
 					<cfset rc.grid[teamIndex]['cat#rc.rawScore.CATEGORY_ID[curRow]#'] = 1>
 				</cfif>
 			</cfif>
+			 --->
 		</cfloop>
 
 		<!--- loop again to calc bonus scores from catBonus1, catBonus2... --->
