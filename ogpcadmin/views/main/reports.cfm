@@ -196,5 +196,5 @@
 
 </cfoutput>
 
-<cfdump var="#rc.grid#">
-<cfdump var="#rc.rawScore#">
+<!--- <cfdump var="#rc.grid#"> --->
+<!--- <cfdump var="#rc.rawScore#"> --->
