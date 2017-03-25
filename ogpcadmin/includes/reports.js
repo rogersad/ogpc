@@ -2,6 +2,7 @@ $(document).ready(function(){
     $('#scoreTable').DataTable({
     	"iDisplayLength": 50
          ,"paging": false
+         ,"bFilter": false
          ,"aoColumns":[
         	{bSortable:true},
         	{bSortable:true},
@@ -18,6 +19,7 @@ $(document).ready(function(){
     $('#scoreTableM').DataTable({
         "iDisplayLength": 50
         ,"paging": false
+        ,"bFilter": false
         ,"aoColumns":[
          	{bSortable:true},
         	{bSortable:true},
