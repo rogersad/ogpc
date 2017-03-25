@@ -1,6 +1,6 @@
 <cfparam name="rc.pageTitle" default="OGPC">
 <cfparam name="rc.jslist" default="">
-
+<cfprocessingdirective suppressWhiteSpace="true">
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,7 +15,7 @@
     <link href="includes/dist/css/bootstrap.css" rel="stylesheet"><!---  --->
 	<!--- code removed. less than IE 9 NOT SUPPORTED.	--->
 	<!--- custom styles comes last, for adding or overriding anything else --->
-	<link rel="stylesheet" type="text/css" href="includes/ogpcstyle.css"/>
+	<link rel="stylesheet" type="text/css" href="includes/ogpcstyle.css" />
 </head>
 <!--- navbar --->
 <div class="navbar navbar-default" role="navigation" style="margin-bottom:0px;">
@@ -62,4 +62,4 @@
 	<META HTTP-EQUIV="Expires" CONTENT="-1">
 </head>
 </html>
-
+</cfprocessingdirective>
