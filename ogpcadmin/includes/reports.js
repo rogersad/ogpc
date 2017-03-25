@@ -32,6 +32,6 @@ $(document).ready(function(){
     });
 });
 
-$(".incomplete").css("background-color","#ffcccc").css("border","1px #ffdddd solid");
+$(".incomplete").css("background-color","#eeeeff").css("border","1px #ddddff solid");
 //$("#scoreTable td:even").css("background-color","#ffffcc");
 $(".right").css("text-align","right");
