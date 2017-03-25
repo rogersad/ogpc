@@ -65,7 +65,11 @@
 			<cfset rc.currentCategory = 0>
 		</cfif>
 
-		 <cfset rc.displayName = client.judgename>
+		<cfif structKeyExists(client,'judgename')>
+			<cfset rc.displayName = client.judgename>
+		<cfelse>
+			<cfset rc.displayName = ''>
+		</cfif>
 	</cffunction>
 
 
@@ -132,7 +136,9 @@
 			<cfif (Left(currentValue,5) EQ 'score') AND Len(currentValue) GT 5> <!--- like 'score95' but NOT 'score' --->
 
 				<cfset tempVar = rc[currentValue]>
-				<cfset result = variables.ogpcService.saveScore(rc.teamID,'#tempVar#')> <!--- de-reference tempVar --->
+				<cfif tempVar GT 0>
+					<cfset result = variables.ogpcService.saveScore(rc.teamID,'#tempVar#')> <!--- de-reference tempVar --->
+				</cfif>
 
 				<cfset logText &= ' radio: #tempVar#;'>
 
