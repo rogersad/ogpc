@@ -127,21 +127,6 @@
 					<cfcase value="5"><cfset rc.grid[teamIndex]['cat5Bonus'] += 1></cfcase>
 				</cfswitch>
 			</cfif>
-			<!---
-			<cfif rc.rawScore.POINT_VALUE[curRow] GT 0> <!--- regular scores: --->
-				<cfif structKeyExists(rc.grid[teamIndex], 'cat#rc.rawScore.CATEGORY_ID[curRow]#')>
-					<cfset rc.grid[teamIndex]['cat#rc.rawScore.CATEGORY_ID[curRow]#'] += rc.rawScore.POINT_VALUE[curRow]>
-				<cfelse>
-					<cfset rc.grid[teamIndex]['cat#rc.rawScore.CATEGORY_ID[curRow]#'] = rc.rawScore.POINT_VALUE[curRow]>
-				</cfif>
-			<cfelse> <!--- bonus scores --->
-				<cfif structKeyExists(rc.grid[teamIndex], 'catBonus#rc.rawScore.CATEGORY_ID[curRow]#')>
-					<cfset rc.grid[teamIndex]['catBonus#rc.rawScore.CATEGORY_ID[curRow]#'] += 1> <!--- bonus = count of 0 --->
-				<cfelse>
-					<cfset rc.grid[teamIndex]['cat#rc.rawScore.CATEGORY_ID[curRow]#'] = 1>
-				</cfif>
-			</cfif>
-			 --->
 		</cfloop>
 
 		<!--- loop again to calc bonus scores from catBonus1, catBonus2... --->
