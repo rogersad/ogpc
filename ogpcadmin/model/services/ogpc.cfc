@@ -55,6 +55,17 @@
 		<cfreturn get_categories>
 	</cffunction>
 
+	<!--- *** getLog() log file --->
+	<cffunction name="getLog" returntype="any">
+
+		<cfset var logName = "#DateFormat(Now(),'yyyymmdd')#log.txt">
+		<cfset var logPath = "/home/ideaslid/public_html/ogpcjudge/model/services/#logName#">
+
+		<cffile action="read" file="#logPath#" variable="theLog"> <!--- --->
+		<!--- if error - no log --->
+		<cfreturn theLog>
+	</cffunction>
+
 
 	<!--- *** getComments(TeamID,CategoryID) returns any judge comments --->
 	<cffunction name="getComments" returntype="query">
@@ -84,7 +95,7 @@
 		       EARNED_ACHIEVEMENT
 		FROM OGPC_ACHIEVEMENTS ACH
 		WHERE ACH.CATEGORY_ID = #arguments.catId#
-		ORDER BY ACH.ID ASC
+		ORDER BY ACH.DISPLAY_ORDER_NUM, ACH.ID ASC
 		</cfquery>
 		<cfreturn get_scores>
 	</cffunction>
@@ -123,9 +134,30 @@
 		  AND TA.OGPC_ACHIEVEMENT_ID = ACH.ID
 		  AND T.ID = TA.OGPC_TEAM_ID
 		  AND C.ID = ACH.CATEGORY_ID
-		ORDER BY S.SCHOOL_NAME, T.NAME, C.DESCR
+		ORDER BY S.SCHOOL_NAME, T.NAME, C.ID
 		</cfquery>
 		<cfreturn get_report>
+	</cffunction>
+
+
+	<!--- *** getScores(teamId,catId)  --->
+	<cffunction name="getScores">
+		<cfargument name="teamID" required="true">
+		<cfargument name="catID" required="true">
+
+		<cfquery name="get_scores" datasource="#application.dsn#">
+		SELECT ACH.POINT_VALUE
+				,C.DESCR CATEGORY_DESCR
+				,C.ID CATEGORY_ID
+		FROM OGPC_TEAM_ACHIEVEMENTS TA
+		    ,OGPC_ACHIEVEMENTS ACH
+		     ,OGPC_CATEGORIES C
+		WHERE C.ID = ACH.CATEGORY_ID
+		  AND ACH.OGPC_TEAM_ID = #arguments.teamID#
+		  AND C.ID = #arguments.catId#
+		</cfquery>
+
+		<cfreturn get_scores>
 	</cffunction>
 
 
@@ -134,12 +166,16 @@
 		<cfargument name="theURL" required="true">
 
 		<cfset var jsonRecord = ''>
+		<cfset var rawFile = ''>
 
+		<!---
 		<cfhttp url="#arguments.theURL#"
 			method="get"
 			result="tmsJSON" />
+		 --->
+		<cffile action="read" file="#arguments.theURL#" variable="rawFile">
 		<!--- Convert JSON to array of structs --->
-		<cfset jsonRecord = deserializeJSON(tmsJSON.fileContent) />
+		<cfset jsonRecord = deserializeJSON(rawFile) />
 		<cfreturn jsonRecord>
 	</cffunction>
 
@@ -166,7 +202,7 @@
 		<cfargument name='divCode' required="true">
 
 		<cfset var mhcode = 'H'>
-		<cfif arguments.divCode EQ 2>
+		<cfif arguments.divCode EQ 1>
 			<cfset mhcode = 'M'>
 		</cfif>
 
